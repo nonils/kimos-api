@@ -11,7 +11,7 @@ export default class GithubIntegrationMapper {
     }
     const template = new GithubIntegrationM(
       githubIntegrationEntity.id,
-      githubIntegrationEntity.userId,
+      githubIntegrationEntity.accountId,
       githubIntegrationEntity.githubInstallationId,
     );
 
