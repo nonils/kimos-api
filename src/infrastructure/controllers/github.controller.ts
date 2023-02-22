@@ -33,7 +33,7 @@ export default class GithubController {
     console.log(code);
     console.log(installationId);
     console.log(setupAction);
-    return JSON.stringify(request);
+    return setupAction;
   }
 
   @Post('/callback')
@@ -44,5 +44,8 @@ export default class GithubController {
     await this.resolveGhIntegrationCallback.handler(
       createGithubIntegrationCommand,
     );
+    return {
+      status: 'success',
+    };
   }
 }

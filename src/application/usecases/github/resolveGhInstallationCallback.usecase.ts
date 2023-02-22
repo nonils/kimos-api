@@ -23,20 +23,30 @@ export default class ResolveGhInstallationCallbackUsecase {
   public async handler(
     createGithubIntegrationCommand: CreateGithubIntegrationCommand,
   ): Promise<any> {
-    const userId = await this.redis.get(createGithubIntegrationCommand.state);
-    // Check with github if the userId doesn't exists in redis (expired) what should we do?
-    if (!userId) {
-      throw new Error('No user id found');
+    const stateValue = await this.redis.get(
+      createGithubIntegrationCommand.state,
+    );
+    // Check with GitHub if the userId doesn't exist in redis (expired) what should we do?
+    if (!stateValue) {
+      throw new Error('State was not found');
     }
+    const parsedStateValue = JSON.parse(stateValue);
+    if (!parsedStateValue.accountId) {
+      throw new Error('accountId was not found in state');
+    }
+    const accountId = parsedStateValue.accountId;
     const githubIntegration =
       this.githubIntegrationFactory.createGithubIntegration(
         createGithubIntegrationCommand,
       );
-    const result = await this.githubClient.getRepositoriesByInstallationId(
+    const result = await this.githubClient.getInstallationDetails(
       createGithubIntegrationCommand.githubInstallationId,
     );
-    console.log(result);
-    githubIntegration.userId = userId;
+    githubIntegration.targetType = result.target_type;
+    githubIntegration.targetId = result.target_id;
+    githubIntegration.lastGithubUpdated = result.updated_at;
+    githubIntegration.githubAccountLogin = result.account.login;
+    githubIntegration.accountId = accountId;
     return this.githubIntegrationRepository.createGithubIntegration(
       githubIntegration,
     );

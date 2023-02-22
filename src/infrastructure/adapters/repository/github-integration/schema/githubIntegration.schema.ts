@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 const GithubIntegrationSchema = new Schema({
-  userId: {
+  accountId: {
     type: String,
     required: true,
   },
@@ -11,6 +11,22 @@ const GithubIntegrationSchema = new Schema({
     default: false,
   },
   githubInstallationId: {
+    type: String,
+    required: true,
+  },
+  targetType: {
+    type: String,
+    required: true,
+  },
+  targetId: {
+    type: String,
+    required: true,
+  },
+  lastGithubUpdated: {
+    type: Date,
+    default: Date.now,
+  },
+  githubAccountLogin: {
     type: String,
     required: true,
   },

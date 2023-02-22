@@ -6,24 +6,27 @@ import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export default class GithubClient {
-  constructor(private configService: ConfigService) {}
+  private readonly githubAppId: string;
+  private readonly privateKey: string;
+  private readonly githubApiUrl: string;
 
-  public async getRepositoriesByInstallationId(
-    instalationId: string,
+  constructor(private configService: ConfigService) {
+    this.githubAppId = this.configService.get(Configuration.GITHUB_APP_ID);
+    this.privateKey = this.configService.get(Configuration.GITHUB_PRIVATE_KEY);
+    this.githubApiUrl = this.configService.get(Configuration.GITHUB_API_URL);
+  }
+
+  private async getAccessTokenForInstallation(
+    installationId: string,
   ): Promise<any> {
-    const githubAppId = this.configService.get(Configuration.GITHUB_APP_ID);
-    const privateKey = this.configService.get(Configuration.GITHUB_PRIVATE_KEY);
-    const githubApiUrl = this.configService.get(Configuration.GITHUB_API_URL);
-
     const payload = {
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + 60 * 10,
-      iss: githubAppId,
+      iss: this.githubAppId,
     };
-    const token = jwt.sign(payload, privateKey, { algorithm: 'RS256' });
-    /// Generate access token
+    const token = jwt.sign(payload, this.privateKey, { algorithm: 'RS256' });
     const result = await axios.post(
-      `${githubApiUrl}/app/installations/${instalationId}/access_tokens`,
+      `${this.githubApiUrl}/app/installations/${installationId}/access_tokens`,
       {},
       {
         headers: {
@@ -36,4 +39,46 @@ export default class GithubClient {
     }
     return result.data;
   }
+
+  public async getRepositoriesByInstallationId(
+    installationId: string,
+  ): Promise<any> {
+    const authenticate = await this.getAccessTokenForInstallation(
+      installationId,
+    );
+    const result = await axios.get(
+      `${this.githubApiUrl}/installation/${installationId}/repositories`,
+      {
+        headers: {
+          Authorization: `Bearer ${authenticate.token}`,
+        },
+      },
+    );
+    if (result.status !== 200) {
+      throw new Error('Cannot get repositories');
+    }
+  }
+
+  public async getInstallationDetails(installationId: string): Promise<any> {
+    const payload = {
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 10,
+      iss: this.githubAppId,
+    };
+    const token = jwt.sign(payload, this.privateKey, { algorithm: 'RS256' });
+    const result = await axios.get(
+      `${this.githubApiUrl}/app/installations/${installationId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    console.log(result);
+    return result.data;
+  }
+
+  //TODO: Add logic for track error at the moment to use the client
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private async trackGithubClientError() {}
 }
