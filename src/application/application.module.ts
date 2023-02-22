@@ -12,6 +12,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { Configuration } from '../config/env.enum';
 import GithubIntegrationRepositoryMongo from '../infrastructure/adapters/repository/github-integration/githubIntegration.repository.mongo';
 import githubIntegrationSchema from '../infrastructure/adapters/repository/github-integration/schema/githubIntegration.schema';
+import GithubClient from '../infrastructure/adapters/client/github/github.client';
 
 @Module({
   imports: [
@@ -46,6 +47,10 @@ import githubIntegrationSchema from '../infrastructure/adapters/repository/githu
     {
       provide: 'GithubIntegrationRepository',
       useClass: GithubIntegrationRepositoryMongo,
+    },
+    {
+      provide: 'GithubClient',
+      useClass: GithubClient,
     },
   ],
   exports: [TemplateFactory, ...TEMPLATES_USECASES, ...GITHUB_USECASES],
