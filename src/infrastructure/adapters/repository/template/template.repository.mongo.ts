@@ -22,9 +22,9 @@ export default class TemplateRepositoryMongo implements TemplateRepository {
   public async createTemplate(
     template: TemplateM,
   ): Promise<Optional<TemplateM>> {
-    let productCreated = new this.templateModel(template);
-    productCreated = await productCreated.save();
-    return TemplateMapper.toDomain(productCreated);
+    let templateCreated = new this.templateModel(template);
+    templateCreated = await templateCreated.save();
+    return TemplateMapper.toDomain(templateCreated);
   }
 
   public async getTemplate(templateId: string): Promise<Optional<TemplateM>> {

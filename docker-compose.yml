@@ -3,6 +3,11 @@ services:
   mongodb:
     image: mongo
     ports:
-      - 27017:27017
+      - '27017:27017'
     volumes:
       - ~/apps/mongo:/data/db
+  redis:
+    image: redis:7.0-alpine
+    restart: always
+    ports:
+      - '10100:6379'
