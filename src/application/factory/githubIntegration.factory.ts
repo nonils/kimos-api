@@ -11,6 +11,10 @@ export default class GithubIntegrationFactory {
       '',
       '',
       createGithubIntegrationCommand.githubInstallationId,
+      '',
+      '',
+      undefined,
+      '',
     );
   }
 }

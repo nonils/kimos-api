@@ -13,6 +13,10 @@ export default class GithubIntegrationMapper {
       githubIntegrationEntity.id,
       githubIntegrationEntity.accountId,
       githubIntegrationEntity.githubInstallationId,
+      githubIntegrationEntity.targetType,
+      githubIntegrationEntity.targetId,
+      githubIntegrationEntity.lastGithubUpdated,
+      githubIntegrationEntity.githubAccountLogin,
     );
 
     template.setCreateAt(new Date(githubIntegrationEntity.createdAt));

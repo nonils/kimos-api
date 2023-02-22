@@ -36,8 +36,15 @@ export default class GithubIntegrationRepositoryMongo
     return Promise.resolve([]);
   }
 
-  getGithubIntegration(id: string): Promise<Optional<GithubIntegrationM>> {
-    return Promise.resolve(undefined);
+  async getGithubIntegration(
+    id: string,
+  ): Promise<Optional<GithubIntegrationM>> {
+    let optional = Optional.empty<GithubIntegrationM>();
+    const integration = await this.githubIntegrationModel.findById(id);
+    if (integration) {
+      optional = await GithubIntegrationMapper.toDomain(integration);
+    }
+    return optional;
   }
 
   updateGithubIntegration(

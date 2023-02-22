@@ -2,12 +2,14 @@ import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import InstallGithubAppUsecase from '../../application/usecases/github/installGithubApp.usecase';
 import CreateGithubIntegrationCommand from '../../application/commands/createGithubIntegration.command';
 import ResolveGhInstallationCallbackUsecase from '../../application/usecases/github/resolveGhInstallationCallback.usecase';
+import CreateGithubRepositoryUsecase from '../../application/usecases/github/createGithubRepository.usecase';
 
 @Controller('/api/v1/github')
 export default class GithubController {
   constructor(
     private installGithubAppUsecase: InstallGithubAppUsecase,
     private resolveGhIntegrationCallback: ResolveGhInstallationCallbackUsecase,
+    private createGithubRepository: CreateGithubRepositoryUsecase,
   ) {}
 
   @Post('/installations')
@@ -44,6 +46,16 @@ export default class GithubController {
     await this.resolveGhIntegrationCallback.handler(
       createGithubIntegrationCommand,
     );
+    return {
+      status: 'success',
+    };
+  }
+
+  @Post('/create-repo-for-org')
+  public async createRepoForOrg(): Promise<any> {
+    const installationId = '63f66edd03bd1288954fc030';
+    const repositoryName = 'test-repo';
+    await this.createGithubRepository.handler(installationId, repositoryName);
     return {
       status: 'success',
     };

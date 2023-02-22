@@ -60,7 +60,7 @@ export default class GithubClient {
   }
 
   public async getInstallationDetails(installationId: string): Promise<any> {
-    const payload = {
+    /*    const payload = {
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + 60 * 10,
       iss: this.githubAppId,
@@ -75,7 +75,54 @@ export default class GithubClient {
       },
     );
     console.log(result);
+    return result.data;*/
+    const authenticate = await this.getAccessTokenForInstallation(
+      installationId,
+    );
+    const result = await axios.get(
+      `${this.githubApiUrl}/app/installations/${installationId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authenticate.token}`,
+        },
+      },
+    );
+    console.log(result);
     return result.data;
+  }
+  async createRepositoryInOrganization(
+    githubInstallationId: string,
+    githubAccountLogin: string,
+    repositoryName: string,
+  ) {
+    const authenticate = await this.getAccessTokenForInstallation(
+      githubInstallationId,
+    );
+    try{
+      const result = await axios.post(
+        `${this.githubApiUrl}/orgs/${githubAccountLogin}/repos`,
+        {
+          name: repositoryName,
+          org: githubAccountLogin,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authenticate.token}`,
+            'X-GitHub-Api-Version': '2022-11-28',
+          },
+        },
+      );
+      if (result.status !== 201) {
+        console.error(result);
+        await this.trackGithubClientError();
+        throw new Error('Cannot create repository');
+      }
+      return result.data;
+    } catch (error) {
+      console.error(error);
+      await this.trackGithubClientError();
+      throw new Error('Cannot create repository');
+    }
   }
 
   //TODO: Add logic for track error at the moment to use the client
