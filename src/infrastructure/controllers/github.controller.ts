@@ -55,7 +55,12 @@ export default class GithubController {
   public async createRepoForOrg(): Promise<any> {
     const installationId = '63f66edd03bd1288954fc030';
     const repositoryName = 'test-repo';
-    await this.createGithubRepository.handler(installationId, repositoryName);
+    const isPrivate = true;
+    await this.createGithubRepository.handler(
+      installationId,
+      repositoryName,
+      isPrivate,
+    );
     return {
       status: 'success',
     };

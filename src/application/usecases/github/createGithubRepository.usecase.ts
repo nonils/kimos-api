@@ -16,6 +16,7 @@ export default class CreateGithubRepositoryUsecase {
   public async handler(
     githubInstallationId: string,
     repositoryName: string,
+    isPrivate: boolean,
   ): Promise<string> {
     const installation =
       await this.githubIntegrationRepository.getGithubIntegration(
@@ -31,6 +32,7 @@ export default class CreateGithubRepositoryUsecase {
         installationValue.githubInstallationId,
         installationValue.githubAccountLogin,
         repositoryName,
+        isPrivate,
       );
     }
     return 'ok';

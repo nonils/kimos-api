@@ -94,16 +94,18 @@ export default class GithubClient {
     githubInstallationId: string,
     githubAccountLogin: string,
     repositoryName: string,
+    isPrivate: boolean,
   ) {
     const authenticate = await this.getAccessTokenForInstallation(
       githubInstallationId,
     );
-    try{
+    try {
       const result = await axios.post(
         `${this.githubApiUrl}/orgs/${githubAccountLogin}/repos`,
         {
           name: repositoryName,
           org: githubAccountLogin,
+          private: isPrivate,
         },
         {
           headers: {
