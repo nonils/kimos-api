@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ApplicationModule } from '../application/application.module';
@@ -8,10 +8,12 @@ import TemplateController from './controllers/template.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/env.enum';
 import GithubIntegrationSchema from './adapters/repository/github-integration/schema/githubIntegration.schema';
+import { AuthenticationMiddleware } from './middleware/AuthenticationMiddleware';
 
 @Module({
   imports: [
     ApplicationModule,
+    ConfigModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -38,4 +40,11 @@ import GithubIntegrationSchema from './adapters/repository/github-integration/sc
   ],
   controllers: [TemplateController, GithubController],
 })
-export class InfrastructureModule {}
+export class InfrastructureModule {
+  configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
+    consumer.apply(AuthenticationMiddleware).forRoutes({
+      method: RequestMethod.POST,
+      path: 'api/v1/github/create-repo-for-org',
+    });
+  }
+}

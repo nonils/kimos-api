@@ -6,4 +6,6 @@ export const configVar = () => ({
   REDIS_CONNECTION_STRING: process.env.REDIS_CONNECTION_STRING,
   GITHUB_APP_URL: process.env.GITHUB_APP_URL,
   GITHUB_APP_ID: process.env.GITHUB_APP_ID,
+  AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
+  AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
 });
