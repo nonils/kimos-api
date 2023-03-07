@@ -1,6 +1,4 @@
-import { Schema } from 'mongoose';
-
-const GithubIntegrationSchema = new Schema({
+module.exports = {
   accountId: {
     type: String,
     required: true,
@@ -38,6 +36,4 @@ const GithubIntegrationSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-});
-
-export default GithubIntegrationSchema;
+};

@@ -1,33 +1,40 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { DomainModule } from 'src/domain/domain.module';
-import TemplateRepositoryMongo from '../infrastructure/adapters/repository/template/template.repository.mongo';
+import { DomainModule } from 'domain/domain.module';
+import TemplateRepositoryPostgres from '../infrastructure/adapters/repository/template/template.repository.postgres';
 import TemplateFactory from './factory/template.factory';
 import GithubIntegrationFactory from './factory/githubIntegration.factory';
 import { TEMPLATES_USECASES } from './usecases/templates';
-import templateSchema from '../infrastructure/adapters/repository/template/schema/template.schema';
 import { GITHUB_USECASES } from './usecases/github';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { Configuration } from '../config/env.enum';
-import GithubIntegrationRepositoryMongo from '../infrastructure/adapters/repository/github-integration/githubIntegration.repository.mongo';
-import githubIntegrationSchema from '../infrastructure/adapters/repository/github-integration/schema/githubIntegration.schema';
+import GithubIntegrationRepositoryPostgres from '../infrastructure/adapters/repository/github-integration/githubIntegration.repository.postgres';
 import GithubClient from '../infrastructure/adapters/client/github/github.client';
-
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TemplateEntity } from "../infrastructure/adapters/repository/template/entity/template.entity";
+import {
+  GithubIntegrationEntity
+} from "../infrastructure/adapters/repository/github-integration/entity/githubIntegration.entity";
 @Module({
   imports: [
     DomainModule,
     ConfigModule,
-    MongooseModule.forFeature([
-      {
-        name: 'Template',
-        schema: templateSchema,
-      },
-      {
-        name: 'GithubIntegration',
-        schema: githubIntegrationSchema,
-      },
-    ]),
+    TemplateEntity,
+    GithubIntegrationEntity,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get(Configuration.POSTGRES_HOST),
+        port: configService.get(Configuration.POSTGRES_PORT),
+        username: configService.get(Configuration.POSTGRES_USER),
+        password: configService.get(Configuration.POSTGRES_PASSWORD),
+        database: configService.get(Configuration.POSTGRES_DATABASE),
+        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      }),
+    }),
+    TypeOrmModule.forFeature([TemplateEntity, GithubIntegrationEntity]),
     RedisModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -43,10 +50,10 @@ import GithubClient from '../infrastructure/adapters/client/github/github.client
     GithubIntegrationFactory,
     ...GITHUB_USECASES,
     ...TEMPLATES_USECASES,
-    { provide: 'TemplateRepository', useClass: TemplateRepositoryMongo },
+    { provide: 'TemplateRepository', useClass: TemplateRepositoryPostgres },
     {
       provide: 'GithubIntegrationRepository',
-      useClass: GithubIntegrationRepositoryMongo,
+      useClass: GithubIntegrationRepositoryPostgres,
     },
     {
       provide: 'GithubClient',

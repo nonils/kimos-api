@@ -1,28 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { Optional } from 'typescript-optional';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { GithubIntegrationEntity } from './entity/githubIntegration.entity';
 import GithubIntegrationMapper from '../../../mapper/githubIntegration.mapper';
 import { GithubIntegrationRepositoryInterface } from '../../../../domain/ports';
 import { GithubIntegrationM } from '../../../../domain/models';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { GithubIntegrationEntity } from './entity/githubIntegration.entity';
 
 @Injectable()
-export default class GithubIntegrationRepositoryMongo
+export default class GithubIntegrationRepositoryPostgres
   implements GithubIntegrationRepositoryInterface
 {
   constructor(
-    @InjectModel('GithubIntegration')
-    private readonly githubIntegrationModel: Model<GithubIntegrationEntity>,
+    @InjectRepository(GithubIntegrationEntity)
+    private githubIntegrationEntityRepository: Repository<GithubIntegrationEntity>,
   ) {}
 
   public async createGithubIntegration(
     githubIntegration: GithubIntegrationM,
   ): Promise<Optional<GithubIntegrationM>> {
-    let githubIntegrationCreated = new this.githubIntegrationModel(
-      githubIntegration,
-    );
-    githubIntegrationCreated = await githubIntegrationCreated.save();
+    const githubIntegrationCreated =
+      await this.githubIntegrationEntityRepository.save(githubIntegration);
     return GithubIntegrationMapper.toDomain(githubIntegrationCreated);
   }
 
@@ -40,7 +38,9 @@ export default class GithubIntegrationRepositoryMongo
     id: string,
   ): Promise<Optional<GithubIntegrationM>> {
     let optional = Optional.empty<GithubIntegrationM>();
-    const integration = await this.githubIntegrationModel.findById(id);
+    const integration = await this.githubIntegrationEntityRepository.findOneBy({
+      id,
+    });
     if (integration) {
       optional = await GithubIntegrationMapper.toDomain(integration);
     }

@@ -1,14 +1,25 @@
-import { Document } from 'mongoose';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export interface GithubIntegrationEntity extends Document {
+@Entity()
+export class GithubIntegrationEntity {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+  @Column()
   accountId: string;
+  @Column()
   githubInstallationId: string;
+  @Column()
   targetType: string;
+  @Column()
   targetId: string;
+  @Column()
   lastGithubUpdated: Date;
+  @Column()
   githubAccountLogin: string;
+  @Column()
   isDeleted: boolean;
+  @Column()
   createdAt: Date;
+  @Column()
   updatedAt: Date;
 }

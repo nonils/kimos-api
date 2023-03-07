@@ -1,10 +1,17 @@
-import { Document } from 'mongoose';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export interface TemplateEntity extends Document {
+@Entity()
+export class TemplateEntity extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+  @Column()
   name: string;
+  @Column()
   description: string;
-  technologies: string[];
+  // @ManyToMany(() => TechnologyEntity)
+  // technologies: TechnologyEntity[];
+  @Column()
   createdAt: Date;
+  @Column()
   updatedAt: Date;
 }

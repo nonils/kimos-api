@@ -11,7 +11,7 @@ export default class TemplateMapper {
       templateEntity.id,
       templateEntity.name,
       templateEntity.description,
-      templateEntity.technologies,
+      [],
     );
 
     template.setCreateAt(new Date(templateEntity.createdAt));
