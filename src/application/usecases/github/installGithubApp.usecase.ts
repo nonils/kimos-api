@@ -19,7 +19,7 @@ export default class InstallGithubAppUsecase {
     const stateUuid = uuidv4();
     await this.redis.set(
       stateUuid,
-      JSON.stringify({ user: userId }),
+      JSON.stringify({ accountId: userId }),
       'EX',
       60 * 10,
     );

@@ -1,25 +1,32 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  Generated,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-@Entity()
-export class GithubIntegrationEntity {
+@Entity('github_integration')
+export class GithubIntegrationEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column()
+  @Column({ name: 'account_id' })
   accountId: string;
-  @Column()
+  @Column({ name: 'github_installation_id' })
   githubInstallationId: string;
-  @Column()
+  @Column({ name: 'target_type' })
   targetType: string;
-  @Column()
+  @Column({ name: 'target_id' })
   targetId: string;
-  @Column()
+  @Column({ name: 'last_github_updated' })
   lastGithubUpdated: Date;
-  @Column()
+  @Column({ name: 'github_account_login' })
   githubAccountLogin: string;
-  @Column()
+  @Column({ name: 'is_deleted' })
   isDeleted: boolean;
-  @Column()
+  @Column({ name: 'created_at' })
   createdAt: Date;
-  @Column()
+  @Column({ name: 'updated_at' })
   updatedAt: Date;
 }

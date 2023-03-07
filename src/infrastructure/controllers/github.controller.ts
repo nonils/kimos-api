@@ -14,7 +14,7 @@ export default class GithubController {
 
   @Post('/installations')
   public async installAppForUser(): Promise<any> {
-    const userId = '1234';
+    const userId = '568f7743-2a64-41d4-99fd-7e71f702e7a3';
     const url = await this.installGithubAppUsecase.handler(userId);
     return {
       status: 'success',
@@ -53,7 +53,7 @@ export default class GithubController {
 
   @Post('/create-repo-for-org')
   public async createRepoForOrg(): Promise<any> {
-    const installationId = '63f66edd03bd1288954fc030';
+    const installationId = 'a2d7792b-1fe5-4005-8ba4-0f0e34152847';
     const repositoryName = 'test-repo';
     const isPrivate = true;
     await this.createGithubRepository.handler(

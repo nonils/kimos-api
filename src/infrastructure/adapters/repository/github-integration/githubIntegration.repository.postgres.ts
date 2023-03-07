@@ -19,8 +19,16 @@ export default class GithubIntegrationRepositoryPostgres
   public async createGithubIntegration(
     githubIntegration: GithubIntegrationM,
   ): Promise<Optional<GithubIntegrationM>> {
+    const entity = GithubIntegrationMapper.toEntity(githubIntegration);
     const githubIntegrationCreated =
-      await this.githubIntegrationEntityRepository.save(githubIntegration);
+      await this.githubIntegrationEntityRepository.save({
+        accountId: githubIntegration.accountId,
+        githubInstallationId: githubIntegration.githubInstallationId,
+        targetType: githubIntegration.targetType,
+        targetId: githubIntegration.targetId,
+        lastGithubUpdated: githubIntegration.lastGithubUpdated,
+        githubAccountLogin: githubIntegration.githubAccountLogin,
+      });
     return GithubIntegrationMapper.toDomain(githubIntegrationCreated);
   }
 

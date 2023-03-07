@@ -6,9 +6,6 @@ import TemplateController from './controllers/template.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/env.enum';
 import { AuthenticationMiddleware } from './middleware/AuthenticationMiddleware';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { TemplateEntity } from './adapters/repository/template/entity/template.entity';
-import { GithubIntegrationEntity } from './adapters/repository/github-integration/entity/githubIntegration.entity';
 
 @Module({
   imports: [

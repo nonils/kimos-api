@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class initialSchema1678164157979 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
     await queryRunner.createTable(
       new Table({
         name: 'github_integration',
@@ -10,6 +11,7 @@ export class initialSchema1678164157979 implements MigrationInterface {
             name: 'id',
             type: 'uuid',
             isPrimary: true,
+            isGenerated: true,
             generationStrategy: 'uuid',
           },
           {
@@ -31,6 +33,17 @@ export class initialSchema1678164157979 implements MigrationInterface {
             name: 'target_id',
             type: 'varchar(64)',
             isNullable: false,
+          },
+          {
+            name: 'github_account_login',
+            type: 'varchar(255)',
+            isNullable: false,
+          },
+          {
+            name: 'is_deleted',
+            type: 'boolean',
+            isNullable: false,
+            default: false,
           },
           {
             name: 'last_github_updated',

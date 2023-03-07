@@ -60,7 +60,7 @@ export default class GithubClient {
   }
 
   public async getInstallationDetails(installationId: string): Promise<any> {
-    /*    const payload = {
+    const payload = {
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + 60 * 10,
       iss: this.githubAppId,
@@ -75,20 +75,20 @@ export default class GithubClient {
       },
     );
     console.log(result);
-    return result.data;*/
-    const authenticate = await this.getAccessTokenForInstallation(
-      installationId,
-    );
-    const result = await axios.get(
-      `${this.githubApiUrl}/app/installations/${installationId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${authenticate.token}`,
-        },
-      },
-    );
-    console.log(result);
     return result.data;
+    // const authenticate = await this.getAccessTokenForInstallation(
+    //   installationId,
+    // );
+    // const result = await axios.get(
+    //   `${this.githubApiUrl}/app/installations/${installationId}`,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${authenticate.token}`,
+    //     },
+    //   },
+    // );
+    // console.log(result);
+    // return result.data;
   }
   async createRepositoryInOrganization(
     githubInstallationId: string,
