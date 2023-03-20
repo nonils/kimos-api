@@ -11,10 +11,10 @@ import { Configuration } from '../config/env.enum';
 import GithubIntegrationRepositoryPostgres from '../infrastructure/adapters/repository/github-integration/githubIntegration.repository.postgres';
 import GithubClient from '../infrastructure/adapters/client/github/github.client';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TemplateEntity } from "../infrastructure/adapters/repository/template/entity/template.entity";
-import {
-  GithubIntegrationEntity
-} from "../infrastructure/adapters/repository/github-integration/entity/githubIntegration.entity";
+import { TemplateEntity } from '../infrastructure/adapters/repository/template/entity/template.entity';
+import { GithubIntegrationEntity } from '../infrastructure/adapters/repository/github-integration/entity/githubIntegration.entity';
+import { ACCOUNT_USECASE } from './usecases/account';
+import AccountRepositoryPostgres from '../infrastructure/adapters/repository/account/account.repository.postgres';
 @Module({
   imports: [
     DomainModule,
@@ -48,8 +48,10 @@ import {
   providers: [
     TemplateFactory,
     GithubIntegrationFactory,
+    ...ACCOUNT_USECASE,
     ...GITHUB_USECASES,
     ...TEMPLATES_USECASES,
+    { provide: 'AccountRepository', useClass: AccountRepositoryPostgres },
     { provide: 'TemplateRepository', useClass: TemplateRepositoryPostgres },
     {
       provide: 'GithubIntegrationRepository',

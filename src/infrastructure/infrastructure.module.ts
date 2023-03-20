@@ -6,6 +6,7 @@ import TemplateController from './controllers/template.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/env.enum';
 import { AuthenticationMiddleware } from './middleware/AuthenticationMiddleware';
+import AccountController from './controllers/account.controller';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { AuthenticationMiddleware } from './middleware/AuthenticationMiddleware'
       }),
     }),
   ],
-  controllers: [TemplateController, GithubController],
+  controllers: [TemplateController, GithubController, AccountController],
 })
 export class InfrastructureModule {
   configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {

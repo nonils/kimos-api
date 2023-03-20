@@ -2,16 +2,26 @@ import {
   BaseEntity,
   Column,
   Entity,
-  Generated,
-  PrimaryColumn,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
+import { AccountEntity } from '../../account/entity/account.entity';
 
-@Entity('github_integration')
+@Entity('Github_Integrations')
 export class GithubIntegrationEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ name: 'account_id' })
+  @ManyToOne(() => AccountEntity, (account) => account.githubIntegrations, {
+    eager: false,
+  })
+  @JoinColumn({ name: 'account_id' })
+  account: AccountEntity;
+
+  @RelationId(
+    (githubIntegration: GithubIntegrationEntity) => githubIntegration.account,
+  )
   accountId: string;
   @Column({ name: 'github_installation_id' })
   githubInstallationId: string;
