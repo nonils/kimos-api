@@ -22,18 +22,19 @@ export class initialSchema1678164157979 implements MigrationInterface {
           },
           {
             name: 'email',
+            isUnique: true,
             type: 'varchar(255)',
             isNullable: false,
           },
           {
             name: 'name',
             type: 'varchar(255)',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'last_name',
             type: 'varchar(256)',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'pronouns',

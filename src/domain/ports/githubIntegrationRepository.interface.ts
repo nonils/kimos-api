@@ -32,7 +32,6 @@ export interface GithubIntegrationRepositoryInterface {
    *
    */
   updateGithubIntegration(
-    githubIntegrationId: string,
     githubIntegration: GithubIntegrationM,
   ): Promise<Optional<GithubIntegrationM>>;
 }

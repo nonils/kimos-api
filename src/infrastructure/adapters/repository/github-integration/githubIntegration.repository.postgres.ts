@@ -19,7 +19,6 @@ export default class GithubIntegrationRepositoryPostgres
   public async createGithubIntegration(
     githubIntegration: GithubIntegrationM,
   ): Promise<Optional<GithubIntegrationM>> {
-    const entity = GithubIntegrationMapper.toEntity(githubIntegration);
     const githubIntegrationCreated =
       await this.githubIntegrationEntityRepository.save({
         accountId: githubIntegration.accountId,
@@ -56,7 +55,6 @@ export default class GithubIntegrationRepositoryPostgres
   }
 
   updateGithubIntegration(
-    githubIntegrationId: string,
     githubIntegration: GithubIntegrationM,
   ): Promise<Optional<GithubIntegrationM>> {
     return Promise.resolve(undefined);

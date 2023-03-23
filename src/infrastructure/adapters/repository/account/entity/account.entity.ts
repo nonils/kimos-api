@@ -6,38 +6,59 @@ export class AccountEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: false })
+  @Column({
+    name: 'email',
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+    unique: true,
+  })
   email: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: false })
+  @Column({ name: 'name', type: 'varchar', length: 255, nullable: true })
   name: string;
 
-  @Column({ type: 'varchar', length: 256, nullable: false })
-  last_name: string;
+  @Column({ name: 'last_name', type: 'varchar', length: 256, nullable: true })
+  lastName: string;
 
-  @Column({ type: 'varchar', length: 32, nullable: true })
+  @Column({ name: 'pronouns', type: 'varchar', length: 32, nullable: true })
   pronouns: string;
 
-  @Column({ type: 'varchar', length: 64, nullable: false })
-  external_id: string;
+  @Column({ name: 'external_id', type: 'varchar', length: 64, nullable: false })
+  externalId: string;
 
-  @Column({ type: 'varchar', length: 256, nullable: true })
-  image_url: string;
+  @Column({ name: 'image_url', type: 'varchar', length: 256, nullable: true })
+  imageUrl: string;
 
-  @Column({ type: 'varchar', length: 512, nullable: true })
+  @Column({ name: 'bio', type: 'varchar', length: 512, nullable: true })
   bio: string;
 
-  @Column({ type: 'timestamp', nullable: true })
-  last_login: Date;
+  @Column({ name: 'last_login', type: 'timestamp', nullable: true })
+  lastLogin: Date;
 
-  @Column({ type: 'boolean', nullable: false, default: false })
-  is_deleted: boolean;
+  @Column({
+    name: 'is_deleted',
+    type: 'boolean',
+    nullable: false,
+    default: false,
+  })
+  isDeleted: boolean;
 
-  @Column({ type: 'timestamp', nullable: false, default: () => 'now()' })
-  created_at: Date;
+  @Column({
+    name: 'created_at',
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'now()',
+  })
+  createdAt: Date;
 
-  @Column({ type: 'timestamp', nullable: false, default: () => 'now()' })
-  updated_at: Date;
+  @Column({
+    name: 'updated_at',
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'now()',
+  })
+  updatedAt: Date;
 
   @OneToMany(
     () => GithubIntegrationEntity,

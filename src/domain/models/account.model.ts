@@ -5,21 +5,27 @@ export class AccountM {
 
   name: string;
 
-  last_name: string;
+  lastName: string;
 
   pronouns: string;
 
-  external_id: string;
+  externalId: string;
 
-  image_url: string;
+  imageUrl: string;
 
   bio: string;
 
-  last_login: Date;
+  lastLogin: Date;
 
-  is_deleted: boolean;
+  isDeleted: boolean;
 
-  created_at: Date;
+  createdAt: Date;
 
-  updated_at: Date;
+  updatedAt: Date;
+  setCreateAt(date: Date) {
+    this.createdAt = date;
+  }
+  setUpdatedAt(date: Date) {
+    this.updatedAt = date;
+  }
 }

@@ -1,16 +1,18 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Req } from '@nestjs/common';
+import { AccountM } from '../../domain/models';
+import PostLoginUsecase from '../../application/usecases/account/associateAccountToAuth0.usecase';
 
 @Controller('/api/v1/accounts')
 export default class AccountController {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+  constructor(private readonly postLoginUsecase: PostLoginUsecase) {}
 
-  @Post('/registrations/callback')
-  public async createAccountAfterAuth0(
-    @Res() request,
-    @Body() product: any,
-  ): Promise<any> {
-    console.log(product);
-    return request.status(HttpStatus.CREATED).json(product);
+  @Post('/login/callback')
+  public async accountCallback(
+    @Req() request,
+    @Body() auth0Request: any,
+  ): Promise<AccountM> {
+    const { user } = auth0Request;
+    const account = await this.postLoginUsecase.handler(user);
+    return account.get();
   }
 }

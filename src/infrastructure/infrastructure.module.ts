@@ -22,7 +22,7 @@ import AccountController from './controllers/account.controller';
       }),
     }),
   ],
-  controllers: [TemplateController, GithubController, AccountController],
+  controllers: [AccountController, TemplateController, GithubController],
 })
 export class InfrastructureModule {
   configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {

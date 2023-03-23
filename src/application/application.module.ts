@@ -15,12 +15,11 @@ import { TemplateEntity } from '../infrastructure/adapters/repository/template/e
 import { GithubIntegrationEntity } from '../infrastructure/adapters/repository/github-integration/entity/githubIntegration.entity';
 import { ACCOUNT_USECASE } from './usecases/account';
 import AccountRepositoryPostgres from '../infrastructure/adapters/repository/account/account.repository.postgres';
+import { AccountEntity } from '../infrastructure/adapters/repository/account/entity/account.entity';
 @Module({
   imports: [
     DomainModule,
     ConfigModule,
-    TemplateEntity,
-    GithubIntegrationEntity,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -34,7 +33,11 @@ import AccountRepositoryPostgres from '../infrastructure/adapters/repository/acc
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       }),
     }),
-    TypeOrmModule.forFeature([TemplateEntity, GithubIntegrationEntity]),
+    TypeOrmModule.forFeature([
+      AccountEntity,
+      TemplateEntity,
+      GithubIntegrationEntity,
+    ]),
     RedisModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -62,6 +65,11 @@ import AccountRepositoryPostgres from '../infrastructure/adapters/repository/acc
       useClass: GithubClient,
     },
   ],
-  exports: [TemplateFactory, ...TEMPLATES_USECASES, ...GITHUB_USECASES],
+  exports: [
+    TemplateFactory,
+    ...ACCOUNT_USECASE,
+    ...TEMPLATES_USECASES,
+    ...GITHUB_USECASES,
+  ],
 })
 export class ApplicationModule {}
