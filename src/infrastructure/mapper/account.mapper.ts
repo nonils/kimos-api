@@ -18,6 +18,7 @@ export default class AccountMapper {
     account.id = accountEntity.id;
     account.email = accountEntity.email;
     account.externalId = accountEntity.externalId;
+    account.imageUrl = accountEntity.imageUrl;
 
     account.setCreateAt(new Date(accountEntity.createdAt));
     return Optional.of(account);

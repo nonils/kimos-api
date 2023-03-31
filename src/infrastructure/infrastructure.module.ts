@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { ApplicationModule } from '../application/application.module';
 import GithubController from './controllers/github.controller';
@@ -11,6 +12,7 @@ import AccountController from './controllers/account.controller';
 @Module({
   imports: [
     ApplicationModule,
+    PassportModule,
     ConfigModule,
     RedisModule.forRootAsync({
       imports: [ConfigModule],
@@ -26,9 +28,15 @@ import AccountController from './controllers/account.controller';
 })
 export class InfrastructureModule {
   configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
-    consumer.apply(AuthenticationMiddleware).forRoutes({
-      method: RequestMethod.POST,
-      path: 'api/v1/github/create-repo-for-org',
-    });
+    consumer.apply(AuthenticationMiddleware).forRoutes(
+      {
+        method: RequestMethod.POST,
+        path: 'api/v1/github/create-repo-for-org',
+      },
+      {
+        method: RequestMethod.GET,
+        path: 'api/v1/accounts/me',
+      },
+    );
   }
 }

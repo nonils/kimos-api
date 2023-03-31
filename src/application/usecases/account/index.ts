@@ -1,3 +1,4 @@
-import PostLoginUsecase from './associateAccountToAuth0.usecase';
+import PostLoginUsecase from './postLogin.usecase';
+import GetUserAccountUsecase from './getUserAccount.usecase';
 
-export const ACCOUNT_USECASE = [PostLoginUsecase];
+export const ACCOUNT_USECASE = [PostLoginUsecase, GetUserAccountUsecase];

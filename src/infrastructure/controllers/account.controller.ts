@@ -1,10 +1,22 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+
 import { AccountM } from '../../domain/models';
-import PostLoginUsecase from '../../application/usecases/account/associateAccountToAuth0.usecase';
+import PostLoginUsecase from '../../application/usecases/account/postLogin.usecase';
+import GetUserAccountUsecase from '../../application/usecases/account/getUserAccount.usecase';
 
 @Controller('/api/v1/accounts')
 export default class AccountController {
-  constructor(private readonly postLoginUsecase: PostLoginUsecase) {}
+  constructor(
+    private readonly postLoginUsecase: PostLoginUsecase,
+    private getUserAccount: GetUserAccountUsecase,
+  ) {}
+
+  @Get('/me')
+  public async getAccount(@Req() request): Promise<AccountM> {
+    const accountId = request.auth.accountId;
+    const optAccount = await this.getUserAccount.handler(accountId);
+    return optAccount.get();
+  }
 
   @Post('/login/callback')
   public async accountCallback(
