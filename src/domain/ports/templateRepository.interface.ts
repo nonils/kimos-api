@@ -26,7 +26,7 @@ export interface TemplateRepository {
   /**
    *
    */
-  updateProduct(
+  updateTemplate(
     templateId: string,
     template: TemplateM,
   ): Promise<Optional<TemplateM>>;

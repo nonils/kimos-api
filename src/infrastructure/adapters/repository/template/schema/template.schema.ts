@@ -1,6 +1,4 @@
-import { Schema } from 'mongoose';
-
-const TemplateSchema = new Schema({
+module.exports = {
   name: {
     type: String,
     required: true,
@@ -15,6 +13,4 @@ const TemplateSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-});
-
-export default TemplateSchema;
+}
