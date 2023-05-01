@@ -6,21 +6,22 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TechnologyEntity } from '../../technology/entity/technology.entity';
+import { ProjectEntity } from '../../project/entity/project.entity';
 
 @Entity()
-export class TemplateEntity extends BaseEntity {
+export class IntegrationEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
   name: string;
   @Column()
   description: string;
-  @ManyToMany(() => TechnologyEntity)
-  technologies: TechnologyEntity[];
+  @Column()
+  type: string;
+  @ManyToMany(() => ProjectEntity, (project) => project.integrations)
+  projects: ProjectEntity[];
   @Column()
   createdAt: Date;
   @Column()
   updatedAt: Date;
-  @Column()
-  templateUrl: string;
 }

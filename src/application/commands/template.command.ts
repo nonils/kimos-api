@@ -19,6 +19,12 @@ export default class TemplateCommand {
   })
   public description: string;
   @ApiProperty({
+    name: 'templateUrl',
+    description: 'Github url of the template',
+    example: 'https://github.com/nonils/template-java-auth0',
+  })
+  public templateUrl: string;
+  @ApiProperty({
     name: 'technologies',
     description: 'Technologies related to the template',
     example: ['Angular', 'NestJS'],
