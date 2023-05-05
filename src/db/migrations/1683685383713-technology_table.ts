@@ -1,11 +1,10 @@
-import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class initialSchema1678164157979 implements MigrationInterface {
+export class technologyTable1683685383713 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
     await queryRunner.createTable(
       new Table({
-        name: 'Accounts',
+        name: 'Technologies',
         columns: [
           {
             name: 'id',
@@ -15,44 +14,45 @@ export class initialSchema1678164157979 implements MigrationInterface {
             generationStrategy: 'uuid',
           },
           {
-            name: 'email',
-            isUnique: true,
-            type: 'varchar(255)',
-            isNullable: false,
-          },
-          {
             name: 'name',
+            isUnique: false,
             type: 'varchar(255)',
-            isNullable: true,
-          },
-          {
-            name: 'last_name',
-            type: 'varchar(256)',
-            isNullable: true,
-          },
-          {
-            name: 'pronouns',
-            type: 'varchar(32)',
-            isNullable: true,
-          },
-          {
-            name: 'external_id',
-            type: 'varchar(64)',
             isNullable: false,
           },
           {
-            name: 'image_url',
-            type: 'varchar(256)',
-            isNullable: true,
-          },
-          {
-            name: 'bio',
+            name: 'description',
+            isUnique: false,
             type: 'varchar(512)',
             isNullable: true,
           },
           {
-            name: 'last_login',
-            type: 'timestamp',
+            name: 'type',
+            isUnique: false,
+            type: 'varchar(64)',
+            isNullable: false,
+            enum: [
+              'FRONTEND',
+              'BACKEND',
+              'MOBILE',
+              'DATABASE',
+              'DEVOPS',
+              'TESTING',
+              'LIBRARY',
+              'DATA',
+              'OTHER',
+            ],
+            default: `'OTHER'`,
+          },
+          {
+            name: 'account_id',
+            isUnique: false,
+            type: 'varchar(100)',
+            isNullable: true,
+          },
+          {
+            name: 'organization_id',
+            isUnique: false,
+            type: 'varchar(100)',
             isNullable: true,
           },
           {
@@ -82,23 +82,9 @@ export class initialSchema1678164157979 implements MigrationInterface {
       }),
       true,
     );
-    await queryRunner.createIndex(
-      'Accounts',
-      new TableIndex({
-        name: 'IDX_account_external_id',
-        columnNames: ['external_id'],
-      }),
-    );
-    await queryRunner.createIndex(
-      'Accounts',
-      new TableIndex({
-        name: 'IDX_account_email',
-        columnNames: ['email'],
-      }),
-    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('Accounts');
+    await queryRunner.dropTable('Technologies');
   }
 }

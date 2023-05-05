@@ -3,8 +3,8 @@ import { Optional } from 'typescript-optional';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProjectEntity } from './entity/project.entity';
-import { ProjectRepositoryInterface } from '../../../../domain/ports/projectRepository.interface';
-import { ProjectM } from '../../../../domain/models/project.model';
+import { ProjectRepositoryInterface } from '../../../../domain/ports';
+import { ProjectM } from '../../../../domain/models';
 import ProjectMapper from '../../../mapper/project.mapper';
 import { AccountEntity } from '../account/entity/account.entity';
 
@@ -51,14 +51,14 @@ export default class ProjectRepositoryPostgres
 
   public async updateProject(project: ProjectM): Promise<Optional<ProjectM>> {
     const ownerEntity = new AccountEntity();
-    ownerEntity.id = project.owner;
+    ownerEntity.id = project.createdBy;
     await this.projectEntityRepository.update(
       { id: project.id },
       {
         name: project.name,
         description: project.description,
         type: project.type,
-        owner: ownerEntity,
+        account: ownerEntity,
       },
     );
     return this.getProject(project.id);

@@ -1,11 +1,16 @@
-import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+  TableIndex,
+} from 'typeorm';
 
-export class initialSchema1678164157979 implements MigrationInterface {
+export class templateFieldsTable1683720276327 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
     await queryRunner.createTable(
       new Table({
-        name: 'Accounts',
+        name: 'Template_Fields',
         columns: [
           {
             name: 'id',
@@ -15,45 +20,33 @@ export class initialSchema1678164157979 implements MigrationInterface {
             generationStrategy: 'uuid',
           },
           {
-            name: 'email',
-            isUnique: true,
+            name: 'field_type',
+            isUnique: false,
             type: 'varchar(255)',
             isNullable: false,
           },
           {
-            name: 'name',
-            type: 'varchar(255)',
+            name: 'field_label',
+            isUnique: false,
+            type: 'varchar(100)',
             isNullable: true,
           },
           {
-            name: 'last_name',
-            type: 'varchar(256)',
+            name: 'field_placeholder',
+            isUnique: false,
+            type: 'varchar(100)',
             isNullable: true,
           },
           {
-            name: 'pronouns',
-            type: 'varchar(32)',
-            isNullable: true,
-          },
-          {
-            name: 'external_id',
-            type: 'varchar(64)',
+            name: 'is_required',
+            type: 'boolean',
             isNullable: false,
+            default: false,
           },
           {
-            name: 'image_url',
-            type: 'varchar(256)',
-            isNullable: true,
-          },
-          {
-            name: 'bio',
-            type: 'varchar(512)',
-            isNullable: true,
-          },
-          {
-            name: 'last_login',
-            type: 'timestamp',
-            isNullable: true,
+            name: 'template_id',
+            type: 'uuid',
+            isNullable: false,
           },
           {
             name: 'is_deleted',
@@ -82,23 +75,26 @@ export class initialSchema1678164157979 implements MigrationInterface {
       }),
       true,
     );
-    await queryRunner.createIndex(
-      'Accounts',
-      new TableIndex({
-        name: 'IDX_account_external_id',
-        columnNames: ['external_id'],
+    await queryRunner.createForeignKey(
+      'Template_Fields',
+      new TableForeignKey({
+        columnNames: ['template_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'Templates',
+        onDelete: 'CASCADE',
       }),
     );
+
     await queryRunner.createIndex(
-      'Accounts',
+      'Template_Fields',
       new TableIndex({
-        name: 'IDX_account_email',
-        columnNames: ['email'],
+        name: 'IDX_template_fields_template_id',
+        columnNames: ['template_id'],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('Accounts');
+    await queryRunner.dropTable('Template_Fields');
   }
 }

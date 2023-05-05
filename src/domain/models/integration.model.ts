@@ -1,5 +1,12 @@
+import { IntegrationType } from './IntegrationType';
+
 export class IntegrationM {
-  constructor(id: string, name: string, desciption: string, type: string) {
+  constructor(
+    id: string,
+    name: string,
+    desciption: string,
+    type: IntegrationType,
+  ) {
     this.id = id;
     this.name = name;
     this.description = desciption;
@@ -10,7 +17,7 @@ export class IntegrationM {
   name: string;
   description: string;
   //If the integration is cloud provider, repo, CI/CD or tasks manager
-  type: string;
+  type: IntegrationType;
   createdAt: Date;
   updatedAt: Date;
 

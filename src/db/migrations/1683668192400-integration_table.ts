@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 
-export class initialSchema1678164157979 implements MigrationInterface {
+export class integrationTable1683668192400 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
     await queryRunner.createTable(
       new Table({
-        name: 'Accounts',
+        name: 'Integrations',
         columns: [
           {
             name: 'id',
@@ -15,45 +14,22 @@ export class initialSchema1678164157979 implements MigrationInterface {
             generationStrategy: 'uuid',
           },
           {
-            name: 'email',
-            isUnique: true,
-            type: 'varchar(255)',
-            isNullable: false,
-          },
-          {
             name: 'name',
+            isUnique: false,
             type: 'varchar(255)',
-            isNullable: true,
-          },
-          {
-            name: 'last_name',
-            type: 'varchar(256)',
-            isNullable: true,
-          },
-          {
-            name: 'pronouns',
-            type: 'varchar(32)',
-            isNullable: true,
-          },
-          {
-            name: 'external_id',
-            type: 'varchar(64)',
             isNullable: false,
           },
           {
-            name: 'image_url',
-            type: 'varchar(256)',
-            isNullable: true,
-          },
-          {
-            name: 'bio',
+            name: 'description',
+            isUnique: false,
             type: 'varchar(512)',
             isNullable: true,
           },
           {
-            name: 'last_login',
-            type: 'timestamp',
-            isNullable: true,
+            name: 'type',
+            isUnique: false,
+            type: 'varchar(100)',
+            isNullable: false,
           },
           {
             name: 'is_deleted',
@@ -83,22 +59,15 @@ export class initialSchema1678164157979 implements MigrationInterface {
       true,
     );
     await queryRunner.createIndex(
-      'Accounts',
+      'Integrations',
       new TableIndex({
-        name: 'IDX_account_external_id',
-        columnNames: ['external_id'],
-      }),
-    );
-    await queryRunner.createIndex(
-      'Accounts',
-      new TableIndex({
-        name: 'IDX_account_email',
-        columnNames: ['email'],
+        name: 'IDX_integrations_type',
+        columnNames: ['type'],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('Accounts');
+    await queryRunner.dropTable('Integrations');
   }
 }

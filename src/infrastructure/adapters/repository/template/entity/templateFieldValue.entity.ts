@@ -5,32 +5,59 @@ import {
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 import { TechnologyEntity } from '../../technology/entity/technology.entity';
 import { TemplateEntity } from './template.entity';
+import { TemplateInstanceEntity } from './templateInstance.entity';
 
 @Entity()
-export class TemplateFieldEntity extends BaseEntity {
+export class TemplateFieldValueEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column()
-  fieldName: string;
-  @Column()
-  fieldType: string;
-  @Column()
-  fieldLabel: string;
-  @Column()
-  fieldPlaceholder: string;
-  @Column()
-  isRequired: boolean;
-  @ManyToOne(() => TemplateEntity)
-  template: TemplateEntity;
-  @Column()
-  createdAt: Date;
-  @Column()
+  @Column({
+    name: 'value',
+    type: 'jsonb',
+    nullable: false,
+  })
+  value: string;
+  @RelationId(
+    (templateFieldValue: TemplateFieldValueEntity) =>
+      templateFieldValue.templateInstance,
+  )
+  templateInstanceId: string;
+  @ManyToOne(
+    () => TemplateInstanceEntity,
+    (templateInstance) => templateInstance.templateValues,
+  )
+  templateInstance: TemplateInstanceEntity;
+  @Column({
+    name: 'is_deleted',
+    type: 'boolean',
+    nullable: false,
+    default: false,
+  })
   isDeleted: boolean;
-  @Column()
+
+  @Column({
+    name: 'created_at',
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'now()',
+  })
+  createdAt: Date;
+
+  @Column({
+    name: 'updated_at',
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'now()',
+  })
   updatedAt: Date;
-  @Column()
+  @Column({
+    name: 'deleted_at',
+    type: 'timestamp',
+    nullable: true,
+  })
   deletedAt: Date;
 }

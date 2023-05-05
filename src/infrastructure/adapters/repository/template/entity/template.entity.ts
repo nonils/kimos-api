@@ -3,24 +3,81 @@ import {
   Column,
   Entity,
   ManyToMany,
+  JoinTable,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TechnologyEntity } from '../../technology/entity/technology.entity';
+import { TemplateFieldEntity } from './templateField.entity';
 
-@Entity()
+@Entity({ name: 'Templates' })
 export class TemplateEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column()
+  @Column({ name: 'name', type: 'varchar', length: 255, nullable: false })
   name: string;
-  @Column()
+  @Column({
+    name: 'description',
+    type: 'varchar',
+    length: 512,
+    nullable: true,
+  })
   description: string;
-  @ManyToMany(() => TechnologyEntity)
+  @ManyToMany(() => TechnologyEntity, (technology) => technology.templates, {
+    eager: false,
+  })
+  @JoinTable({
+    name: 'Template_Technologies',
+    joinColumn: {
+      name: 'template_id',
+    },
+    inverseJoinColumn: {
+      name: 'technology_id',
+    },
+  })
   technologies: TechnologyEntity[];
-  @Column()
-  createdAt: Date;
-  @Column()
-  updatedAt: Date;
-  @Column()
+  @ManyToMany(
+    () => TemplateFieldEntity,
+    (templateField) => templateField.template,
+    {
+      eager: false,
+    },
+  )
+  templateFields: TemplateFieldEntity[];
+
+  @Column({
+    name: 'template_url',
+    type: 'varchar',
+    length: 512,
+    nullable: false,
+  })
   templateUrl: string;
+  @Column({
+    name: 'is_deleted',
+    type: 'boolean',
+    nullable: false,
+    default: false,
+  })
+  isDeleted: boolean;
+
+  @Column({
+    name: 'created_at',
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'now()',
+  })
+  createdAt: Date;
+
+  @Column({
+    name: 'updated_at',
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'now()',
+  })
+  updatedAt: Date;
+  @Column({
+    name: 'deleted_at',
+    type: 'timestamp',
+    nullable: true,
+  })
+  deletedAt: Date;
 }

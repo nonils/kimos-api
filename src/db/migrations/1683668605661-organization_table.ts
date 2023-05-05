@@ -1,11 +1,16 @@
-import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+  TableIndex,
+} from 'typeorm';
 
-export class initialSchema1678164157979 implements MigrationInterface {
+export class organizationTable1683668605661 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
     await queryRunner.createTable(
       new Table({
-        name: 'Accounts',
+        name: 'Organizations',
         columns: [
           {
             name: 'id',
@@ -15,45 +20,54 @@ export class initialSchema1678164157979 implements MigrationInterface {
             generationStrategy: 'uuid',
           },
           {
-            name: 'email',
-            isUnique: true,
-            type: 'varchar(255)',
-            isNullable: false,
-          },
-          {
             name: 'name',
+            isUnique: false,
             type: 'varchar(255)',
-            isNullable: true,
-          },
-          {
-            name: 'last_name',
-            type: 'varchar(256)',
-            isNullable: true,
-          },
-          {
-            name: 'pronouns',
-            type: 'varchar(32)',
-            isNullable: true,
-          },
-          {
-            name: 'external_id',
-            type: 'varchar(64)',
             isNullable: false,
           },
           {
-            name: 'image_url',
-            type: 'varchar(256)',
-            isNullable: true,
-          },
-          {
-            name: 'bio',
+            name: 'description',
+            isUnique: false,
             type: 'varchar(512)',
             isNullable: true,
           },
           {
-            name: 'last_login',
-            type: 'timestamp',
+            name: 'image_url',
+            isUnique: false,
+            type: 'varchar(512)',
             isNullable: true,
+          },
+          {
+            name: 'url',
+            isUnique: false,
+            type: 'varchar(512)',
+            isNullable: true,
+          },
+          {
+            name: 'billing_email',
+            isUnique: false,
+            type: 'varchar(512)',
+            isNullable: false,
+          },
+          {
+            name: 'email',
+            isUnique: false,
+            type: 'varchar(512)',
+            isNullable: true,
+          },
+          {
+            name: 'owner_id',
+            isUnique: false,
+            type: 'uuid',
+            isNullable: false,
+          },
+          {
+            name: 'plan',
+            isUnique: false,
+            type: 'varchar(100)',
+            isNullable: false,
+            enum: ['FREE', 'BASIC', 'PRO', 'ENTERPRISE'],
+            default: `'FREE'`,
           },
           {
             name: 'is_deleted',
@@ -82,23 +96,26 @@ export class initialSchema1678164157979 implements MigrationInterface {
       }),
       true,
     );
-    await queryRunner.createIndex(
-      'Accounts',
-      new TableIndex({
-        name: 'IDX_account_external_id',
-        columnNames: ['external_id'],
+    await queryRunner.createForeignKey(
+      'Organizations',
+      new TableForeignKey({
+        columnNames: ['owner_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'Accounts',
+        onDelete: 'CASCADE',
       }),
     );
+
     await queryRunner.createIndex(
-      'Accounts',
+      'Organizations',
       new TableIndex({
-        name: 'IDX_account_email',
-        columnNames: ['email'],
+        name: 'IDX_organization_owner_id',
+        columnNames: ['owner_id'],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('Accounts');
+    await queryRunner.dropTable('Organizations');
   }
 }

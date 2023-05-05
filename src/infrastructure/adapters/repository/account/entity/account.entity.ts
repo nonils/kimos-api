@@ -1,5 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { GithubIntegrationEntity } from '../../github-integration/entity/githubIntegration.entity';
+import { OrganizationMemberEntity } from '../../organization-member/entity/organizationMember.entity';
+import { OrganizationEntity } from '../../organization/entity/organization.entity';
+import { ProjectEntity } from '../../project/entity/project.entity';
 
 @Entity({ name: 'Accounts' })
 export class AccountEntity {
@@ -59,6 +62,12 @@ export class AccountEntity {
     default: () => 'now()',
   })
   updatedAt: Date;
+  @Column({
+    name: 'deleted_at',
+    type: 'timestamp',
+    nullable: true,
+  })
+  deletedAt: Date;
 
   @OneToMany(
     () => GithubIntegrationEntity,
@@ -68,4 +77,22 @@ export class AccountEntity {
     },
   )
   githubIntegrations: GithubIntegrationEntity[];
+
+  @OneToMany(
+    () => OrganizationMemberEntity,
+    (organizationMember) => organizationMember.account,
+    {
+      eager: false,
+    },
+  )
+  organizationMemberships: OrganizationMemberEntity[];
+
+  @OneToMany(() => OrganizationEntity, (organization) => organization.owner, {
+    eager: false,
+  })
+  organizations: OrganizationEntity[];
+  @OneToMany(() => ProjectEntity, (projects) => projects.account, {
+    eager: false,
+  })
+  projects: ProjectEntity[];
 }

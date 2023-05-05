@@ -1,5 +1,4 @@
 import { Optional } from 'typescript-optional';
-import { IntegrationM } from '../models/integration.model';
 import { ProjectM } from '../models/project.model';
 
 export interface ProjectRepositoryInterface {
