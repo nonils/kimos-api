@@ -1,0 +1,38 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Install AWS CLI
+        run: |
+          curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Configure AWS credentials
+        run: |
+          aws configure set aws_access_key_id <YOUR_ACCESS_KEY_ID>
+          aws configure set aws_secret_access_key <YOUR_SECRET_ACCESS_KEY>
+          aws configure set default.region <YOUR_AWS_REGION>
+
+      - name: Deploy to AWS
+        run: |
+          npm install
+          npm run build
+          aws elasticbeanstalk create-application-version --application-name <YOUR_APPLICATION_NAME> --version-label $GITHUB_SHA --source-bundle S3Bucket=<YOUR_S3_BUCKET_NAME>,S3Key=archive.zip
+          aws elasticbeanstalk update-environment --environment-name <YOUR_ENVIRONMENT_NAME> --version-label $GITHUB_SHA
