@@ -1,9 +1,4 @@
 export class GithubIntegrationM {
-  // constructor(id: string, accountId: string, githubInstallationId: string) {
-  //   this.id = id;
-  //   this.accountId = accountId;
-  //   this.githubInstallationId = githubInstallationId;
-  // }
   constructor(
     id: string,
     accountId: string,

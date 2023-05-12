@@ -1,0 +1,11 @@
+export enum TechnologyType {
+  FRONTEND = 'FRONTEND',
+  BACKEND = 'BACKEND',
+  MOBILE = 'MOBILE',
+  DATABASE = 'DATABASE',
+  DEVOPS = 'DEVOPS',
+  TESTING = 'TESTING',
+  LIBRARY = 'LIBRARY',
+  DATA = 'DATA',
+  OTHER = 'OTHER',
+}

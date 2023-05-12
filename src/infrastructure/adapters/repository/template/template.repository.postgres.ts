@@ -22,7 +22,12 @@ export default class TemplateRepositoryPostgres implements TemplateRepository {
   public async createTemplate(
     template: TemplateM,
   ): Promise<Optional<TemplateM>> {
-    const templateCreated = await this.templateRepository.save(template);
+    const templateCreated = await this.templateRepository.save({
+      ...template,
+      technologies: template.technologies.map((technology) => ({
+        id: technology,
+      })),
+    });
     return TemplateMapper.toDomain(templateCreated);
   }
 
@@ -47,7 +52,15 @@ export default class TemplateRepositoryPostgres implements TemplateRepository {
     templateId: string,
     template: TemplateM,
   ): Promise<Optional<TemplateM>> {
-    await this.templateRepository.update({ id: templateId }, { ...template });
+    await this.templateRepository.update(
+      { id: templateId },
+      {
+        ...template,
+        technologies: template.technologies.map((technology) => ({
+          id: technology,
+        })),
+      },
+    );
     return this.getTemplate(templateId);
   }
 }

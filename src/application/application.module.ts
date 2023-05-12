@@ -13,9 +13,17 @@ import GithubClient from '../infrastructure/adapters/client/github/github.client
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TemplateEntity } from '../infrastructure/adapters/repository/template/entity/template.entity';
 import { GithubIntegrationEntity } from '../infrastructure/adapters/repository/github-integration/entity/githubIntegration.entity';
-import { ACCOUNT_USECASE } from './usecases/account';
+import { ACCOUNT_USECASES } from './usecases/account';
 import AccountRepositoryPostgres from '../infrastructure/adapters/repository/account/account.repository.postgres';
 import { AccountEntity } from '../infrastructure/adapters/repository/account/entity/account.entity';
+import { ORGANIZATION_USECASES } from './usecases/organizations';
+import OrganizationRepositoryPostgres from '../infrastructure/adapters/repository/organization/organization.repository.postgres';
+import { OrganizationEntity } from '../infrastructure/adapters/repository/organization/entity/organization.entity';
+import { ProjectEntity } from '../infrastructure/adapters/repository/project/entity/project.entity';
+import OrganizationFactory from './factory/organization.factory';
+import { PROJECT_USECASES } from './usecases/project';
+import ProjectRepositoryPostgres from '../infrastructure/adapters/repository/project/project.repository.postgres';
+
 @Module({
   imports: [
     DomainModule,
@@ -37,6 +45,8 @@ import { AccountEntity } from '../infrastructure/adapters/repository/account/ent
       AccountEntity,
       TemplateEntity,
       GithubIntegrationEntity,
+      OrganizationEntity,
+      ProjectEntity,
     ]),
     RedisModule.forRootAsync({
       imports: [ConfigModule],
@@ -50,15 +60,26 @@ import { AccountEntity } from '../infrastructure/adapters/repository/account/ent
   ],
   providers: [
     TemplateFactory,
+    OrganizationFactory,
     GithubIntegrationFactory,
-    ...ACCOUNT_USECASE,
+    ...ACCOUNT_USECASES,
     ...GITHUB_USECASES,
     ...TEMPLATES_USECASES,
+    ...PROJECT_USECASES,
+    ...ORGANIZATION_USECASES,
     { provide: 'AccountRepository', useClass: AccountRepositoryPostgres },
     { provide: 'TemplateRepository', useClass: TemplateRepositoryPostgres },
     {
       provide: 'GithubIntegrationRepository',
       useClass: GithubIntegrationRepositoryPostgres,
+    },
+    {
+      provide: 'OrganizationRepository',
+      useClass: OrganizationRepositoryPostgres,
+    },
+    {
+      provide: 'ProjectRepository',
+      useClass: ProjectRepositoryPostgres,
     },
     {
       provide: 'GithubClient',
@@ -67,7 +88,10 @@ import { AccountEntity } from '../infrastructure/adapters/repository/account/ent
   ],
   exports: [
     TemplateFactory,
-    ...ACCOUNT_USECASE,
+    OrganizationFactory,
+    ...ACCOUNT_USECASES,
+    ...ORGANIZATION_USECASES,
+    ...PROJECT_USECASES,
     ...TEMPLATES_USECASES,
     ...GITHUB_USECASES,
   ],
