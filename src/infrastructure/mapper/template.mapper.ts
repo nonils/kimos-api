@@ -11,6 +11,7 @@ export default class TemplateMapper {
       templateEntity.id,
       templateEntity.name,
       templateEntity.description,
+      templateEntity.templateUrl,
       [],
     );
 

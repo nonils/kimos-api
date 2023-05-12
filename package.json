@@ -18,10 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "yarn run build && npx typeorm -d dist/db/datasource.js",
+    "typeorm": "yarn run build && npx typeorm",
     "migration:generate": "yarn run typeorm migration:generate -n",
-    "migration:run": "yarn run typeorm migration:run",
-    "migration:revert": "yarn run typeorm migration:revert"
+    "migration:create": "yarn run typeorm migration:create",
+    "migration:run": "yarn run typeorm --dataSource dist/db/datasource.js migration:run",
+    "migration:revert": "yarn run typeorm --dataSource dist/db/datasource.js migration:revert"
   },
   "dependencies": {
     "@liaoliaots/nestjs-redis": "^9.0.5",
@@ -39,6 +40,7 @@
     "ioredis": "^5.3.1",
     "jsonwebtoken": "^9.0.0",
     "jwks-rsa": "^3.0.1",
+    "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",

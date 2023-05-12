@@ -33,7 +33,7 @@ export class GithubIntegrationEntity extends BaseEntity {
   lastGithubUpdated: Date;
   @Column({ name: 'github_account_login' })
   githubAccountLogin: string;
-  @Column({ name: 'is_deleted' })
+  @Column({ name: 'is_deleted', nullable: false, default: false })
   isDeleted: boolean;
   @Column({ name: 'created_at' })
   createdAt: Date;

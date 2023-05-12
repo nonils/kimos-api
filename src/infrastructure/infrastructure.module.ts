@@ -8,6 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/env.enum';
 import { AuthenticationMiddleware } from './middleware/AuthenticationMiddleware';
 import AccountController from './controllers/account.controller';
+import OrganizationController from './controllers/organization.controller';
+import ProjectController from './controllers/project.controller';
 
 @Module({
   imports: [
@@ -24,7 +26,13 @@ import AccountController from './controllers/account.controller';
       }),
     }),
   ],
-  controllers: [AccountController, TemplateController, GithubController],
+  controllers: [
+    AccountController,
+    TemplateController,
+    GithubController,
+    OrganizationController,
+    ProjectController,
+  ],
 })
 export class InfrastructureModule {
   configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
