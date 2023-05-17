@@ -4,7 +4,7 @@ export class cicdProviderTable1684120434589 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'CICD_Providers',
+        name: 'CI_CD_Providers',
         columns: [
           {
             name: 'id',
@@ -60,6 +60,6 @@ export class cicdProviderTable1684120434589 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('CICD_Providers');
+    await queryRunner.dropTable('CI_CD_Providers');
   }
 }

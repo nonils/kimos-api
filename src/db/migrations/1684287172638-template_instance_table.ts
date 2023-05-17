@@ -20,7 +20,7 @@ export class templateInstanceTable1683774299824 implements MigrationInterface {
             generationStrategy: 'uuid',
           },
           {
-            name: 'template_id',
+            name: 'template_implementation_id',
             isUnique: false,
             type: 'uuid',
             isNullable: false,
@@ -73,9 +73,9 @@ export class templateInstanceTable1683774299824 implements MigrationInterface {
     await queryRunner.createForeignKey(
       'Template_Instances',
       new TableForeignKey({
-        columnNames: ['template_id'],
+        columnNames: ['template_implementation_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'Templates',
+        referencedTableName: 'Template_Implementations',
         onDelete: 'CASCADE',
       }),
     );
@@ -110,8 +110,8 @@ export class templateInstanceTable1683774299824 implements MigrationInterface {
     await queryRunner.createIndex(
       'Template_Instances',
       new TableIndex({
-        name: 'IDX_template_instances_template_id',
-        columnNames: ['template_id'],
+        name: 'IDX_template_instances_template_implementation_id',
+        columnNames: ['template_implementation_id'],
       }),
     );
     await queryRunner.createIndex(
