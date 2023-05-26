@@ -25,6 +25,12 @@ export default class TemplateCommand {
   })
   public templateUrl: string;
   @ApiProperty({
+    name: 'temmplateImageUrl',
+    description: 'Url of image that will be shown in the template card',
+    example: 'https://github.com/nonils/template-java-auth0',
+  })
+  public templateImageUrl: string;
+  @ApiProperty({
     name: 'technologies',
     description: 'Technologies related to the template',
     example: ['Angular', 'NestJS'],

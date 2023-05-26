@@ -1,12 +1,12 @@
 export class TemplateInstanceM {
-  constructor(id: string, templateId: string, projectId: string) {
+  constructor(id: string, templateImplementationId: string, projectId: string) {
     this.id = id;
-    this.templateId = templateId;
+    this.templateImplementationId = templateImplementationId;
   }
 
   id: string;
   projectId: string;
-  templateId: string;
+  templateImplementationId: string;
   createdAt: Date;
   updatedAt: Date;
   isDeleted: boolean;

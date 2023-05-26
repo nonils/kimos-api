@@ -4,10 +4,16 @@ export interface TemplateRepository {
   /**
    *
    */
-  getAll(): Promise<TemplateM[]>;
+  getAll(page: number, size: number, search: string): Promise<TemplateM[]>;
 
   /**
-   * Returns product filtered by id
+   * Returns the number of templates filtered by search
+   * @param search
+   */
+  countBySearch(search: string): Promise<number>;
+
+  /**
+   * Returns template filtered by id
    * @returns a `Template` object containing the data.
    * @param id
    */

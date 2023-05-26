@@ -10,6 +10,8 @@ import { AuthenticationMiddleware } from './middleware/AuthenticationMiddleware'
 import AccountController from './controllers/account.controller';
 import OrganizationController from './controllers/organization.controller';
 import ProjectController from './controllers/project.controller';
+import CICDProviderController from './controllers/CICDProvider.controller';
+import CodeVersionProviderController from './controllers/codeVersionProvider.controller';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import ProjectController from './controllers/project.controller';
   ],
   controllers: [
     AccountController,
+    CICDProviderController,
+    CodeVersionProviderController,
     TemplateController,
     GithubController,
     OrganizationController,

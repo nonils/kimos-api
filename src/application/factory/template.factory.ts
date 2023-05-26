@@ -12,6 +12,7 @@ export default class TemplateFactory {
       templateCommand.description,
       templateCommand.templateUrl,
       templateCommand.technologies,
+      templateCommand.templateImageUrl,
     );
   }
 }

@@ -13,6 +13,7 @@ export default class TemplateMapper {
       templateEntity.description,
       templateEntity.templateUrl,
       [],
+      templateEntity.templateImageUrl,
     );
 
     template.setCreateAt(new Date(templateEntity.createdAt));

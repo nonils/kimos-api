@@ -52,6 +52,13 @@ export class TemplateEntity extends BaseEntity {
   })
   templateUrl: string;
   @Column({
+    name: 'template_image_url',
+    type: 'varchar',
+    length: 512,
+    nullable: true,
+  })
+  templateImageUrl: string;
+  @Column({
     name: 'is_deleted',
     type: 'boolean',
     nullable: false,

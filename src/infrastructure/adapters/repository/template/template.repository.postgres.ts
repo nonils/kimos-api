@@ -5,7 +5,7 @@ import TemplateMapper from '../../../mapper/template.mapper';
 import { TemplateRepository } from '../../../../domain/ports';
 import { TemplateM } from '../../../../domain/models';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Like, Repository } from 'typeorm';
 
 @Injectable()
 export default class TemplateRepositoryPostgres implements TemplateRepository {
@@ -14,9 +14,27 @@ export default class TemplateRepositoryPostgres implements TemplateRepository {
     private templateRepository: Repository<TemplateEntity>,
   ) {}
 
-  public async getAll(): Promise<TemplateM[]> {
-    const templates = await this.templateRepository.find();
+  public async getAll(
+    page: number,
+    size: number,
+    search: string,
+  ): Promise<TemplateM[]> {
+    const templates = await this.templateRepository.find({
+      where: {
+        name: ILike(`%${search}%`),
+      },
+      skip: page * size,
+      take: size,
+    });
     return TemplateMapper.toDomains(templates);
+  }
+
+  public async countBySearch(search: string): Promise<number> {
+    return this.templateRepository.count({
+      where: {
+        name: ILike(`%${search}%`),
+      },
+    });
   }
 
   public async createTemplate(
