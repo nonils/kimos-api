@@ -6,7 +6,7 @@ import {
   TableIndex,
 } from 'typeorm';
 
-export class templateFieldValuesTable1683774622479
+export class templateFieldValuesTable1684287172639
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {

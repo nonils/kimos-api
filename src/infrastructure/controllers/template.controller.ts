@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
   Query,
   Res,
@@ -13,12 +14,14 @@ import TemplateCommand from '../../application/commands/template.command';
 import { TemplateM } from '../../domain/models';
 import { Page } from '../../domain/models/page';
 import { ApiQuery } from '@nestjs/swagger';
+import { GetAllTemplateImplementationsUseCase } from '../../application/usecases/templates/getAllTemplateImplementations.usecase';
 
 @Controller('/api/v1/templates')
 export default class TemplateController {
   constructor(
     private getAllTemplateUseCase: GetAllTemplatesUseCase,
     private createTemplateUseCase: CreateTemplateUseCase,
+    private getTemplateImplementationsUseCase: GetAllTemplateImplementationsUseCase,
   ) {}
 
   @ApiQuery({ name: 'page', type: 'number', required: false })
@@ -46,5 +49,14 @@ export default class TemplateController {
   ): Promise<any> {
     const productCreated = await this.createTemplateUseCase.handler(product);
     return request.status(HttpStatus.CREATED).json(productCreated);
+  }
+
+  @Get('/:id/implementations')
+  public async getImplementations(
+    @Res() request,
+    @Param('id') id: string,
+  ): Promise<any> {
+    await this.getTemplateImplementationsUseCase.handler(id);
+    return request.status(HttpStatus.OK).json([]);
   }
 }

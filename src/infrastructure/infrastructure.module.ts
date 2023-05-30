@@ -12,6 +12,7 @@ import OrganizationController from './controllers/organization.controller';
 import ProjectController from './controllers/project.controller';
 import CICDProviderController from './controllers/CICDProvider.controller';
 import CodeVersionProviderController from './controllers/codeVersionProvider.controller';
+import CloudProviderController from './controllers/cloudProvider.controller';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import CodeVersionProviderController from './controllers/codeVersionProvider.con
   controllers: [
     AccountController,
     CICDProviderController,
+    CloudProviderController,
     CodeVersionProviderController,
     TemplateController,
     GithubController,

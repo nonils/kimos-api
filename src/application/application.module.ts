@@ -23,6 +23,15 @@ import { ProjectEntity } from '../infrastructure/adapters/repository/project/ent
 import OrganizationFactory from './factory/organization.factory';
 import { PROJECT_USECASES } from './usecases/project';
 import ProjectRepositoryPostgres from '../infrastructure/adapters/repository/project/project.repository.postgres';
+import CloudProviderRepositoryPostgres from '../infrastructure/adapters/repository/cloud-provider/cloudProvider.repository.postgres';
+import CICDProviderRepositoryPostgres from '../infrastructure/adapters/repository/cicd-provider/cicdProvider.repository.postgres';
+import { CLOUD_PROVIDER_USECASES } from './usecases/cloud-provider';
+import { CODE_VERSION_MANAGER_PROVIDER_USECASES } from './usecases/code-version-manager-provider';
+import { CodeVersionManagerProviderRepositoryPostgres } from '../infrastructure/adapters/repository/code-version-manager-provider/codeVersionManagerProvider.repository.postgres';
+import { CICD_PROVIDER_USECASES } from './usecases/cicd-provider';
+import { CloudProviderEntity } from '../infrastructure/adapters/repository/cloud-provider/entity/cloudProvider.entity';
+import { CICDProviderEntity } from '../infrastructure/adapters/repository/cicd-provider/entity/CICDProvider.entity';
+import { CodeVersionManagerProviderEntity } from '../infrastructure/adapters/repository/code-version-manager-provider/entity/codeVersionManagerProvider.entity';
 
 @Module({
   imports: [
@@ -43,6 +52,9 @@ import ProjectRepositoryPostgres from '../infrastructure/adapters/repository/pro
     }),
     TypeOrmModule.forFeature([
       AccountEntity,
+      CloudProviderEntity,
+      CodeVersionManagerProviderEntity,
+      CICDProviderEntity,
       TemplateEntity,
       GithubIntegrationEntity,
       OrganizationEntity,
@@ -62,6 +74,9 @@ import ProjectRepositoryPostgres from '../infrastructure/adapters/repository/pro
     TemplateFactory,
     OrganizationFactory,
     GithubIntegrationFactory,
+    ...CLOUD_PROVIDER_USECASES,
+    ...CICD_PROVIDER_USECASES,
+    ...CODE_VERSION_MANAGER_PROVIDER_USECASES,
     ...ACCOUNT_USECASES,
     ...GITHUB_USECASES,
     ...TEMPLATES_USECASES,
@@ -72,6 +87,22 @@ import ProjectRepositoryPostgres from '../infrastructure/adapters/repository/pro
     {
       provide: 'GithubIntegrationRepository',
       useClass: GithubIntegrationRepositoryPostgres,
+    },
+    {
+      provide: 'CloudProviderRepository',
+      useClass: CloudProviderRepositoryPostgres,
+    },
+    {
+      provide: 'CICDProviderRepository',
+      useClass: CICDProviderRepositoryPostgres,
+    },
+    {
+      provide: 'CodeVersionManagerProviderRepository',
+      useClass: CodeVersionManagerProviderRepositoryPostgres,
+    },
+    {
+      provide: 'TemplateImplementationRepository',
+      useClass: TemplateRepositoryPostgres,
     },
     {
       provide: 'OrganizationRepository',
@@ -90,6 +121,9 @@ import ProjectRepositoryPostgres from '../infrastructure/adapters/repository/pro
     TemplateFactory,
     OrganizationFactory,
     ...ACCOUNT_USECASES,
+    ...CLOUD_PROVIDER_USECASES,
+    ...CICD_PROVIDER_USECASES,
+    ...CODE_VERSION_MANAGER_PROVIDER_USECASES,
     ...ORGANIZATION_USECASES,
     ...PROJECT_USECASES,
     ...TEMPLATES_USECASES,
