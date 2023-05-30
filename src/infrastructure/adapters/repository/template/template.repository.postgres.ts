@@ -3,7 +3,7 @@ import { TemplateEntity } from './entity/template.entity';
 import { Optional } from 'typescript-optional';
 import TemplateMapper from '../../../mapper/template.mapper';
 import { TemplateRepository } from '../../../../domain/ports';
-import { TemplateM } from '../../../../domain/models';
+import { CICDProviderM, TemplateM } from '../../../../domain/models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Like, Repository } from 'typeorm';
 
@@ -18,23 +18,67 @@ export default class TemplateRepositoryPostgres implements TemplateRepository {
     page: number,
     size: number,
     search: string,
+    codeVersionManagerProvider: string,
+    CICDProvider: string,
+    cloudProvider: string,
   ): Promise<TemplateM[]> {
-    const templates = await this.templateRepository.find({
-      where: {
-        name: ILike(`%${search}%`),
-      },
-      skip: page * size,
-      take: size,
-    });
+    let where = `template.name ilike :search`;
+    if (codeVersionManagerProvider) {
+      where = `${where} AND templateImplementation.codeVersionManagerProvider = :codeVersionManagerProvider`;
+    }
+    if (CICDProvider) {
+      where = `${where} AND templateImplementation.cicdProvider = :cicdProvider`;
+    }
+    if (cloudProvider) {
+      where = `${where} AND templateImplementation.cloudProvider = :cloudProvider`;
+    }
+    const templates = await this.templateRepository
+      .createQueryBuilder('template')
+      .innerJoinAndSelect(
+        'template.templateImplementations',
+        'templateImplementation',
+      )
+      .where(where, {
+        search: `%${search}%`,
+        codeVersionManagerProvider,
+        cloudProvider,
+        cicdProvider: CICDProvider,
+      })
+      .take(size)
+      .offset(page * size)
+      .getMany();
     return TemplateMapper.toDomains(templates);
   }
 
-  public async countBySearch(search: string): Promise<number> {
-    return this.templateRepository.count({
-      where: {
-        name: ILike(`%${search}%`),
-      },
-    });
+  public async countBySearch(
+    search: string,
+    codeVersionManagerProvider: string,
+    CICDProvider: string,
+    cloudProvider: string,
+  ): Promise<number> {
+    let where = `template.name ilike :search`;
+    if (codeVersionManagerProvider) {
+      where = `${where} AND templateImplementation.codeVersionManagerProvider = :codeVersionManagerProvider`;
+    }
+    if (CICDProvider) {
+      where = `${where} AND templateImplementation.cicdProvider = :cicdProvider`;
+    }
+    if (cloudProvider) {
+      where = `${where} AND templateImplementation.cloudProvider = :cloudProvider`;
+    }
+    return this.templateRepository
+      .createQueryBuilder('template')
+      .innerJoinAndSelect(
+        'template.templateImplementations',
+        'templateImplementation',
+      )
+      .where(where, {
+        search: `%${search}%`,
+        codeVersionManagerProvider,
+        cloudProvider,
+        cicdProvider: CICDProvider,
+      })
+      .getCount();
   }
 
   public async createTemplate(

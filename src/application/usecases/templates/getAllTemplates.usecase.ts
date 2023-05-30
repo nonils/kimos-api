@@ -14,10 +14,25 @@ export default class GetAllTemplatesUseCase {
     page: number,
     size: number,
     search: string,
+    codeVersionManagerProvider: string,
+    CICDProvider: string,
+    cloudProvider: string,
   ): Promise<Page<TemplateM>> {
     const [total, data] = await Promise.all([
-      this.templateRepository.countBySearch(search),
-      this.templateRepository.getAll(page, size, search),
+      this.templateRepository.countBySearch(
+        search,
+        codeVersionManagerProvider,
+        CICDProvider,
+        cloudProvider,
+      ),
+      this.templateRepository.getAll(
+        page,
+        size,
+        search,
+        codeVersionManagerProvider,
+        CICDProvider,
+        cloudProvider,
+      ),
     ]);
     return new Page<TemplateM>(page, size, total, data);
   }

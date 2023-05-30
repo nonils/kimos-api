@@ -5,10 +5,11 @@ import {
   ManyToMany,
   JoinTable,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
 import { TechnologyEntity } from '../../technology/entity/technology.entity';
 import { TemplateFieldEntity } from './templateField.entity';
-
+import { TemplateImplementationEntity } from './templateImplementation.entity';
 @Entity({ name: 'Templates' })
 export class TemplateEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -43,6 +44,14 @@ export class TemplateEntity extends BaseEntity {
     },
   )
   templateFields: TemplateFieldEntity[];
+  @OneToMany(
+    () => TemplateImplementationEntity,
+    (templateImplementationEntity) => templateImplementationEntity.template,
+    {
+      eager: false,
+    },
+  )
+  templateImplementations: TemplateImplementationEntity[];
 
   @Column({
     name: 'template_url',
