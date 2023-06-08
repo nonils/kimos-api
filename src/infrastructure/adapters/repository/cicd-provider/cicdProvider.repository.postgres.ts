@@ -13,7 +13,7 @@ export default class CICDProviderRepositoryPostgres
     private cicdProviderEntityRepository: Repository<CICDProviderEntity>,
   ) {}
 
-  async getAllCICDProvider(): Promise<CICDProviderM[]> {
+  async getAllCICDProviders(): Promise<CICDProviderM[]> {
     return CICDProviderMapper.toDomains(
       await this.cicdProviderEntityRepository.find(),
     );

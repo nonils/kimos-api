@@ -1,6 +1,6 @@
 import { CICDProviderM } from '../models';
 
 export interface CICDProviderRepositoryInterface {
-  getAllCICDProvider(): Promise<CICDProviderM[]>;
+  getAllCICDProviders(): Promise<CICDProviderM[]>;
   getCICDProviderById(id: string): Promise<CICDProviderM>;
 }

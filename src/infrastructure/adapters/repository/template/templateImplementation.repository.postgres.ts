@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TemplateImplementationRepository } from '../../../../domain/ports';
+import { TemplateImplementationRepositoryInterface } from '../../../../domain/ports';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TemplateImplementationM } from '../../../../domain/models';
@@ -8,14 +8,14 @@ import { TemplateImplementationMapper } from '../../../mapper/templateImplementa
 
 @Injectable()
 export default class TemplateImplementationRepositoryPostgres
-  implements TemplateImplementationRepository
+  implements TemplateImplementationRepositoryInterface
 {
   constructor(
     @InjectRepository(TemplateImplementationEntity)
     private templateImplementationRepository: Repository<TemplateImplementationEntity>,
   ) {}
 
-  async getAllTemplateImplementationsByTemplateId(
+  public async getAllTemplateImplementationsByTemplateId(
     id: string,
   ): Promise<TemplateImplementationM[]> {
     const templateImplementations =
@@ -29,7 +29,6 @@ export default class TemplateImplementationRepositoryPostgres
           codeVersionManagerProvider: true,
         },
       });
-
     return TemplateImplementationMapper.toDomains(templateImplementations);
   }
 }

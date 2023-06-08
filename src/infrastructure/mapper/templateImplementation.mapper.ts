@@ -12,8 +12,16 @@ export class TemplateImplementationMapper {
     const templateImplementation = new TemplateImplementationM();
     templateImplementation.id = templateImplementationEntity.id;
     templateImplementation.templateId = templateImplementationEntity.templateId;
+    templateImplementation.cloudProviderId =
+      templateImplementationEntity.cloudProviderId;
     templateImplementation.cicdProviderId =
       templateImplementationEntity.cicdProviderId;
+    templateImplementation.codeVersionManagerProviderId =
+      templateImplementationEntity.codeVersionManagerProviderId;
+    templateImplementation.isDeleted = templateImplementationEntity.isDeleted;
+    templateImplementation.createdAt = templateImplementationEntity.createdAt;
+    templateImplementation.updatedAt = templateImplementationEntity.updatedAt;
+    templateImplementation.deletedAt = templateImplementationEntity.deletedAt;
     return Optional.of(templateImplementation);
   }
 

@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'CI_CD_Providers' })
 export class CICDProviderEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

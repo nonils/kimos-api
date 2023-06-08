@@ -32,6 +32,8 @@ import { CICD_PROVIDER_USECASES } from './usecases/cicd-provider';
 import { CloudProviderEntity } from '../infrastructure/adapters/repository/cloud-provider/entity/cloudProvider.entity';
 import { CICDProviderEntity } from '../infrastructure/adapters/repository/cicd-provider/entity/CICDProvider.entity';
 import { CodeVersionManagerProviderEntity } from '../infrastructure/adapters/repository/code-version-manager-provider/entity/codeVersionManagerProvider.entity';
+import TemplateImplementationRepositoryPostgres from '../infrastructure/adapters/repository/template/templateImplementation.repository.postgres';
+import { TemplateImplementationEntity } from '../infrastructure/adapters/repository/template/entity/templateImplementation.entity';
 
 @Module({
   imports: [
@@ -52,13 +54,14 @@ import { CodeVersionManagerProviderEntity } from '../infrastructure/adapters/rep
     }),
     TypeOrmModule.forFeature([
       AccountEntity,
+      CICDProviderEntity,
       CloudProviderEntity,
       CodeVersionManagerProviderEntity,
-      CICDProviderEntity,
-      TemplateEntity,
       GithubIntegrationEntity,
       OrganizationEntity,
       ProjectEntity,
+      TemplateEntity,
+      TemplateImplementationEntity,
     ]),
     RedisModule.forRootAsync({
       imports: [ConfigModule],
@@ -85,6 +88,10 @@ import { CodeVersionManagerProviderEntity } from '../infrastructure/adapters/rep
     { provide: 'AccountRepository', useClass: AccountRepositoryPostgres },
     { provide: 'TemplateRepository', useClass: TemplateRepositoryPostgres },
     {
+      provide: 'TemplateImplementationRepository',
+      useClass: TemplateImplementationRepositoryPostgres,
+    },
+    {
       provide: 'GithubIntegrationRepository',
       useClass: GithubIntegrationRepositoryPostgres,
     },
@@ -99,10 +106,6 @@ import { CodeVersionManagerProviderEntity } from '../infrastructure/adapters/rep
     {
       provide: 'CodeVersionManagerProviderRepository',
       useClass: CodeVersionManagerProviderRepositoryPostgres,
-    },
-    {
-      provide: 'TemplateImplementationRepository',
-      useClass: TemplateRepositoryPostgres,
     },
     {
       provide: 'OrganizationRepository',

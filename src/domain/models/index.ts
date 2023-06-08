@@ -7,4 +7,4 @@ export * from './templateImplementation.model';
 export * from './githubIntegration.model';
 export * from './cloudProvider.model';
 export * from './codeVersionManagmentProvider.model';
-export * from './cicdProvider.model';
+export * from './CICDProvider.model';

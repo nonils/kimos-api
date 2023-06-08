@@ -1,6 +1,6 @@
 import { TemplateImplementationM } from '../models';
 
-export interface TemplateImplementationRepository {
+export interface TemplateImplementationRepositoryInterface {
   getAllTemplateImplementationsByTemplateId(
     id: string,
   ): Promise<TemplateImplementationM[]>;

@@ -1,28 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
+import { GetAllCodeVersionManagerProviderUsecase } from '../../application/usecases/code-version-manager-provider/getAllCodeVersionManagerProvider.usecase';
+import { CodeVersionManagerProviderM } from '../../domain/models';
 
 @Controller('/api/v1/code-version-providers')
 export default class CodeVersionProviderController {
+  constructor(
+    private readonly getAllCodeVersionProvidersUsecase: GetAllCodeVersionManagerProviderUsecase,
+  ) {}
   @Get()
-  async getAllCodeVersionProviders(): Promise<any> {
-    return [
-      {
-        id: '1',
-        name: 'Github',
-        logo: 'https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png',
-        url: 'https://github.com',
-      },
-      {
-        id: '2',
-        name: 'Gitlab',
-        logo: 'https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png',
-        url: 'https://gitlab.com',
-      },
-      {
-        id: '3',
-        name: 'BitBucket',
-        logo: 'https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png',
-        url: 'https://bitbucket.com',
-      },
-    ];
+  async getAllCodeVersionProviders(): Promise<CodeVersionManagerProviderM[]> {
+    return this.getAllCodeVersionProvidersUsecase.handler();
   }
 }

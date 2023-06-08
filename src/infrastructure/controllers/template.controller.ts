@@ -12,7 +12,7 @@ import { validate } from 'uuid';
 import GetAllTemplatesUseCase from '../../application/usecases/templates/getAllTemplates.usecase';
 import CreateTemplateUseCase from '../../application/usecases/templates/createTemplate.usecase';
 import TemplateCommand from '../../application/commands/template.command';
-import { TemplateM } from '../../domain/models';
+import { TemplateImplementationM, TemplateM } from '../../domain/models';
 import { Page } from '../../domain/models/page';
 import { ApiQuery } from '@nestjs/swagger';
 import { GetAllTemplateImplementationsUseCase } from '../../application/usecases/templates/getAllTemplateImplementations.usecase';
@@ -96,8 +96,9 @@ export default class TemplateController {
   public async getImplementations(
     @Res() request,
     @Param('id') id: string,
-  ): Promise<any> {
-    await this.getTemplateImplementationsUseCase.handler(id);
-    return request.status(HttpStatus.OK).json([]);
+  ): Promise<TemplateImplementationM[]> {
+    const implementations =
+      await this.getTemplateImplementationsUseCase.handler(id);
+    return request.status(HttpStatus.OK).json(implementations);
   }
 }

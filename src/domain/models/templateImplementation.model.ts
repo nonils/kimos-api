@@ -6,7 +6,7 @@ export class TemplateImplementationM {
   id: string;
   templateId: string;
   cicdProviderId: string;
-  codeSystemVersionControlId: string;
+  codeVersionManagerProviderId: string;
   cloudProviderId: string;
   cicdProvider: CICDProviderM;
   cloudProvider: CloudProviderM;

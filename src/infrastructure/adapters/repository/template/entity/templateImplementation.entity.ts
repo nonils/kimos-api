@@ -1,5 +1,6 @@
 import {
   BaseEntity,
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -44,4 +45,33 @@ export class TemplateImplementationEntity extends BaseEntity {
   @ManyToOne(() => CodeVersionManagerProviderEntity)
   @JoinColumn({ name: 'code_version_manager_provider_id' })
   codeVersionManagerProvider: CodeVersionManagerProviderEntity;
+  @Column({
+    name: 'is_deleted',
+    type: 'boolean',
+    nullable: false,
+    default: false,
+  })
+  isDeleted: boolean;
+
+  @Column({
+    name: 'created_at',
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'now()',
+  })
+  createdAt: Date;
+
+  @Column({
+    name: 'updated_at',
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'now()',
+  })
+  updatedAt: Date;
+  @Column({
+    name: 'deleted_at',
+    type: 'timestamp',
+    nullable: true,
+  })
+  deletedAt: Date;
 }

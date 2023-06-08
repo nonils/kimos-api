@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { TemplateImplementationRepository } from '../../../domain/ports';
+import { TemplateImplementationRepositoryInterface } from '../../../domain/ports';
 import { TemplateImplementationM } from '../../../domain/models';
 
 @Injectable()
 export class GetAllTemplateImplementationsUseCase {
   constructor(
     @Inject('TemplateImplementationRepository')
-    private templateImplementationRepository: TemplateImplementationRepository,
+    private templateImplementationRepository: TemplateImplementationRepositoryInterface,
   ) {}
 
   public async handler(id: string): Promise<TemplateImplementationM[]> {
