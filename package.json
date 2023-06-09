@@ -24,7 +24,7 @@
     "migration:generate": "yarn run typeorm migration:generate -n",
     "migration:create": "yarn run typeorm migration:create",
     "migration:run": "yarn run typeorm --dataSource dist/db/datasource.js migration:run",
-    "migration:gh:run": "yarn run typeorm migration:run",
+    "migration:gh:run": "yarn run typeorm --dataSource dist/db/remote.datasource.js migration:run",
     "migration:docker:run": "yarn run typeorm --dataSource dist/db/docker.datasource.js migration:run",
     "migration:test:run": "yarn run typeorm --dataSource dist/db/test.datasource.js migration:run",
     "migration:revert": "yarn run typeorm --dataSource dist/db/datasource.js migration:revert"
