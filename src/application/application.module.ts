@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DomainModule } from 'domain/domain.module';
+import { DomainModule } from '../domain/domain.module';
 import TemplateRepositoryPostgres from '../infrastructure/adapters/repository/template/template.repository.postgres';
 import TemplateFactory from './factory/template.factory';
 import GithubIntegrationFactory from './factory/githubIntegration.factory';

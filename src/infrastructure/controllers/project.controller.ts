@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common';
-import { ProjectM } from 'domain/models/project.model';
+import { ProjectM } from '../../domain/models';
 import { CreateProjectUsecase } from '../../application/usecases/project/createProject.usecase';
 import CreateProjectCommand from '../../application/commands/project/createProject.command';
 import ProjectMapper from '../mapper/project.mapper';

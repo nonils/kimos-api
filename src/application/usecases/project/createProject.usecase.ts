@@ -1,10 +1,10 @@
 import { Inject } from '@nestjs/common';
-import { ProjectM } from 'domain/models';
+import { ProjectM } from '../../../domain/models';
 import {
   AccountRepositoryInterface,
   OrganizationRepositoryInterface,
   ProjectRepositoryInterface,
-} from 'domain/ports';
+} from '../../../domain/ports';
 
 export class CreateProjectUsecase {
   constructor(

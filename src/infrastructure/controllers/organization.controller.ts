@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Req } from '@nestjs/common';
-import { OrganizationM } from 'domain/models';
+import { OrganizationM } from '../../domain/models';
 import { CreateOrganizationUsecase } from '../../application/usecases/organizations/createOrganization.usecase';
 import { CreateOrganizationCommand } from '../../application/commands/organization/createOganization.command';
 import { ApiResponse } from '@nestjs/swagger';
