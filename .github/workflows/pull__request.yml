@@ -11,7 +11,11 @@ jobs:
 
     # Service containers to run with `container-job`
     services:
-      # Label used to access the service container
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+          # Label used to access the service container
       postgres:
         # Docker Hub image
         image: postgres
@@ -49,3 +53,4 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: kimos-test
+          REDIS_CONNECTION_STRING: redis://localhost:6379

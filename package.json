@@ -14,7 +14,7 @@
     "start:docker": "NODE_ENV=docker nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "NODE_ENV=test yarn migration:test:run && jest test/*",
+    "test": "NODE_ENV=test yarn migration:test:run && jest test/*  --detectOpenHandles",
     "test:gh": "yarn migration:gh:run && jest test/*",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
