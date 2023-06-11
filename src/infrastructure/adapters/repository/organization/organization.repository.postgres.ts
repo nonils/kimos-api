@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { OrganizationEntity } from './entity/organization.entity';
 import OrganizationMapper from '../../../mapper/organization.mapper';
 import { AccountEntity } from '../account/entity/account.entity';
-import { OrganizationRepositoryInterface } from 'domain/ports';
+import { OrganizationRepositoryInterface } from '../../../../domain/ports';
 import { OrganizationM } from '../../../../domain/models';
 
 @Injectable()

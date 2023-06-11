@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { TemplateEntity } from './template.entity';
+import { TemplateImplementationEntity } from './templateImplementation.entity';
 import { ProjectEntity } from '../../project/entity/project.entity';
 import { TemplateFieldValueEntity } from './templateFieldValue.entity';
 
@@ -14,8 +14,8 @@ import { TemplateFieldValueEntity } from './templateFieldValue.entity';
 export class TemplateInstanceEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @ManyToOne(() => TemplateEntity)
-  template: TemplateEntity;
+  @ManyToOne(() => TemplateImplementationEntity)
+  templateImplementationId: TemplateImplementationEntity;
   @ManyToOne(() => ProjectEntity, (project) => project.templateInstances)
   project: ProjectEntity;
   @Column({

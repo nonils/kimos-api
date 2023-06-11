@@ -10,6 +10,10 @@ import { AuthenticationMiddleware } from './middleware/AuthenticationMiddleware'
 import AccountController from './controllers/account.controller';
 import OrganizationController from './controllers/organization.controller';
 import ProjectController from './controllers/project.controller';
+import CICDProviderController from './controllers/CICDProvider.controller';
+import CodeVersionProviderController from './controllers/codeVersionProvider.controller';
+import CloudProviderController from './controllers/cloudProvider.controller';
+import HomeController from './controllers/home.controller';
 
 @Module({
   imports: [
@@ -28,10 +32,14 @@ import ProjectController from './controllers/project.controller';
   ],
   controllers: [
     AccountController,
+    CICDProviderController,
+    CloudProviderController,
+    CodeVersionProviderController,
     TemplateController,
     GithubController,
     OrganizationController,
     ProjectController,
+    HomeController,
   ],
 })
 export class InfrastructureModule {

@@ -1,9 +1,8 @@
 import { Optional } from 'typescript-optional';
 import { ProjectEntity } from '../adapters/repository/project/entity/project.entity';
-import { ProjectM } from '../../domain/models/project.model';
+import { ProjectM, ProjectType } from '../../domain/models';
 import { AccountEntity } from '../adapters/repository/account/entity/account.entity';
 import CreateProjectCommand from '../../application/commands/project/createProject.command';
-import { ProjectType } from '../../domain/models/projectType.enum';
 
 export default class ProjectMapper {
   public static toEntity(project: ProjectM): ProjectEntity {

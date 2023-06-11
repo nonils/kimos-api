@@ -36,3 +36,6 @@ lerna-debug.log*
 
 /environments/*.env
 *datasource.ts
+*docker.datasource.ts
+*test.datasource.ts
+data/*

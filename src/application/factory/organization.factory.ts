@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OrganizationM } from 'domain/models';
+import { OrganizationM } from '../../domain/models';
 import { CreateOrganizationCommand } from '../commands/organization/createOganization.command';
 
 @Injectable()

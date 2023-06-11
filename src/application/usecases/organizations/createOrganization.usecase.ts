@@ -1,4 +1,4 @@
-import { OrganizationM } from 'domain/models';
+import { OrganizationM } from '../../../domain/models';
 import {
   AccountRepositoryInterface,
   OrganizationRepositoryInterface,

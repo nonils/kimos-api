@@ -3,4 +3,8 @@ export * from './organization.model';
 export * from './project.model';
 export * from './projectType.enum';
 export * from './template.model';
+export * from './templateImplementation.model';
 export * from './githubIntegration.model';
+export * from './cloudProvider.model';
+export * from './codeVersionManagmentProvider.model';
+export * from './CICDProvider.model';

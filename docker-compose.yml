@@ -1,16 +1,30 @@
 version: '3.9'
 services:
-  redis:
-    image: redis:7.0-alpine
-    restart: always
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - '10100:6379'
-  postgres:
-    image: postgres:13.3-alpine
+      - '10101:10101'
+    env_file:
+      - environments/docker.env
+    depends_on:
+      - db
+      - redis
+  db:
+    image: postgres:latest
     restart: always
     ports:
       - '10110:5432'
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      - POSTGRES_USER=kimos
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=kimos
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - '10100:6379'

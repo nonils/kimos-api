@@ -6,11 +6,13 @@ import {
   TableIndex,
 } from 'typeorm';
 
-export class templateInstanceTable1683774299824 implements MigrationInterface {
+export class templateFieldValuesTable1684287172639
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'Template_Instances',
+        name: 'Template_Field_Values',
         columns: [
           {
             name: 'id',
@@ -20,19 +22,13 @@ export class templateInstanceTable1683774299824 implements MigrationInterface {
             generationStrategy: 'uuid',
           },
           {
-            name: 'template_id',
+            name: 'field_id',
             isUnique: false,
             type: 'uuid',
             isNullable: false,
           },
           {
-            name: 'account_id',
-            isUnique: false,
-            type: 'uuid',
-            isNullable: true,
-          },
-          {
-            name: 'organization_id',
+            name: 'instance_id',
             isUnique: false,
             type: 'uuid',
             isNullable: true,
@@ -68,69 +64,57 @@ export class templateInstanceTable1683774299824 implements MigrationInterface {
           },
         ],
       }),
-      true,
     );
     await queryRunner.createForeignKey(
-      'Template_Instances',
+      'Template_Field_Values',
       new TableForeignKey({
-        columnNames: ['template_id'],
+        columnNames: ['instance_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'Templates',
+        referencedTableName: 'Template_Instances',
         onDelete: 'CASCADE',
       }),
     );
     await queryRunner.createForeignKey(
-      'Template_Instances',
+      'Template_Field_Values',
       new TableForeignKey({
-        columnNames: ['account_id'],
+        columnNames: ['field_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'Accounts',
-        onDelete: 'CASCADE',
-      }),
-    );
-    await queryRunner.createForeignKey(
-      'Template_Instances',
-      new TableForeignKey({
-        columnNames: ['organization_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'Organizations',
-        onDelete: 'CASCADE',
-      }),
-    );
-    await queryRunner.createForeignKey(
-      'Template_Instances',
-      new TableForeignKey({
-        columnNames: ['created_by'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'Accounts',
+        referencedTableName: 'Template_Fields',
         onDelete: 'CASCADE',
       }),
     );
 
     await queryRunner.createIndex(
-      'Template_Instances',
+      'Template_Field_Values',
       new TableIndex({
-        name: 'IDX_template_instances_template_id',
-        columnNames: ['template_id'],
+        name: 'IDX_template_field_values_field_id',
+        columnNames: ['field_id'],
       }),
     );
     await queryRunner.createIndex(
-      'Template_Instances',
+      'Template_Field_Values',
       new TableIndex({
-        name: 'IDX_template_instances_account_id',
-        columnNames: ['account_id'],
+        name: 'IDX_template_field_values_instance_id',
+        columnNames: ['instance_id'],
       }),
     );
     await queryRunner.createIndex(
-      'Template_Instances',
+      'Template_Field_Values',
       new TableIndex({
-        name: 'IDX_template_instances_organization_id',
-        columnNames: ['organization_id'],
+        name: 'IDX_template_field_values_instance_id_field_id',
+        columnNames: ['instance_id', 'field_id'],
+      }),
+    );
+    await queryRunner.createIndex(
+      'Template_Field_Values',
+      new TableIndex({
+        name: 'IDX_template_field_values_instance_id_field_id_updated_at',
+        columnNames: ['instance_id', 'field_id', 'updated_at'],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('Template_Instances');
+    await queryRunner.dropTable('Template_Field_Values');
   }
 }
