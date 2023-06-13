@@ -34,3 +34,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'us-east-2'
           SOURCE_DIR: 'dist'
+      - name: a ver gaston
+        run: echo bucket "${{ secrets.AWS_S3_BUCKET }}"
