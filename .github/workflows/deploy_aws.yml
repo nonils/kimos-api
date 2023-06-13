@@ -23,7 +23,8 @@ jobs:
 
       - name: Build
         run: npm run build
-
+      - name: a ver gaston
+        run: echo bucket "${{ secrets.AWS_S3_BUCKET }}"
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
         with:
@@ -34,5 +35,3 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'us-east-2'
           SOURCE_DIR: 'dist'
-      - name: a ver gaston
-        run: echo bucket "${{ secrets.AWS_S3_BUCKET }}"
