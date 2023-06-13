@@ -30,7 +30,15 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to S3
+      - name: Create ZIP archive
+        run: |
+          cd $SOURCE_DIR
+          zip -r $GITHUB_WORKSPACE/archive.zip .
+
+      - name: Deploy ZIP to S3
         uses: jakejarvis/s3-sync-action@master
         with:
-          args: --acl public-read --follow-symlinks --delete
+          args: --acl public-read --follow-symlinks --delete --dest ${{ env.DESTINATION_DIR }}
+          manifest: '{"aws-access-key-id": "${{ secrets.AWS_ACCESS_KEY_ID }}", "aws-secret-access-key": "${{ secrets.AWS_SECRET_ACCESS_KEY }}", "aws-region": "${{ env.AWS_REGION }}", "source": "${{ env.SOURCE_DIR }}", "destination": "${{ env.DEST_DIR }}", "cache-control": "max-age=3600"}'
+          upload-zip: true
+          zip-name: 'archive.zip'
