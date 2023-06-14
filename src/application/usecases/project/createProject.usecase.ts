@@ -17,6 +17,21 @@ export class CreateProjectUsecase {
   ) {}
 
   public async handler(project: ProjectM): Promise<ProjectM> {
-    return undefined;
+    const [optAccount, projectByOwner] = await Promise.all([
+      this.accountRepository.getAccountById(project.createdBy),
+      this.projectRepository.findByOwnerAndName(
+        project.createdBy,
+        project.name,
+      ),
+    ]);
+    if (optAccount.isEmpty()) {
+      //TODO replace for a custom exception
+      throw new Error('Account not found');
+    }
+    if (projectByOwner.length > 0) {
+      throw new Error('A project exists with the same name');
+    }
+    const optProject = await this.projectRepository.createProject(project);
+    return optProject.get();
   }
 }

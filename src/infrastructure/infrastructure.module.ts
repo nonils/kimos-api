@@ -50,6 +50,10 @@ export class InfrastructureModule {
         path: 'api/v1/github/create-repo-for-org',
       },
       {
+        method: RequestMethod.POST,
+        path: 'api/v1/projects',
+      },
+      {
         method: RequestMethod.GET,
         path: 'api/v1/accounts/me',
       },

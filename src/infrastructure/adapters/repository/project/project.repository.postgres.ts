@@ -26,10 +26,12 @@ export default class ProjectRepositoryPostgres
     const projectCreated = await this.projectEntityRepository.save({
       name: project.name,
       description: project.description,
-      integrations: project.integrations.map((integration) => ({
-        id: integration,
-      })),
-      owner: new AccountEntity(),
+      type: project.type,
+      account: { id: project.createdBy },
+      isPrivateRepo: project.isPrivateRepo,
+      jiraProjectKey: project.jiraProjectKey,
+      jiraProjectName: project.jiraProjectName,
+      repositoryName: project.repositoryName,
     });
     return ProjectMapper.toDomain(projectCreated);
   }
@@ -62,5 +64,27 @@ export default class ProjectRepositoryPostgres
       },
     );
     return this.getProject(project.id);
+  }
+
+  async findByOwner(ownerId: string): Promise<ProjectM[]> {
+    const projectEntities = await this.projectEntityRepository.find({
+      where: {
+        account: {
+          id: ownerId,
+        },
+      },
+    });
+    return ProjectMapper.toDomains(projectEntities);
+  }
+  async findByOwnerAndName(ownerId: string, name: string): Promise<ProjectM[]> {
+    const projectEntities = await this.projectEntityRepository.find({
+      where: {
+        name: name,
+        account: {
+          id: ownerId,
+        },
+      },
+    });
+    return ProjectMapper.toDomains(projectEntities);
   }
 }

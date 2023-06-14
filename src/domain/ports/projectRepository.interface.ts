@@ -28,4 +28,11 @@ export interface ProjectRepositoryInterface {
    *
    */
   updateProject(project: ProjectM): Promise<Optional<ProjectM>>;
+
+  /**
+   *
+   */
+  findByOwner(ownerId: string): Promise<ProjectM[]>;
+
+  findByOwnerAndName(ownerId: string, name: string): Promise<ProjectM[]>;
 }

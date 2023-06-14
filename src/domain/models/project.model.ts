@@ -21,6 +21,13 @@ export class ProjectM {
 
   id: string;
   name: string;
+  isPrivateRepo: boolean;
+  repositoryName: string;
+  repositoryId: string;
+  repositoryUrl: string;
+  jiraProjectKey: string;
+  jiraProjectName: string;
+  jiraProjectId: string;
   createdBy: string;
   organizationId: string;
   description: string;

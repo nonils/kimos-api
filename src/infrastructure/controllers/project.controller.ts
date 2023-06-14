@@ -3,10 +3,14 @@ import { ProjectM } from '../../domain/models';
 import { CreateProjectUsecase } from '../../application/usecases/project/createProject.usecase';
 import CreateProjectCommand from '../../application/commands/project/createProject.command';
 import ProjectMapper from '../mapper/project.mapper';
+import { GetMyProjectsUsecase } from '../../application/usecases/project/getMyProjects.usecase';
 
 @Controller('/api/v1/projects')
 export default class ProjectController {
-  constructor(private readonly createProjectUsecase: CreateProjectUsecase) {}
+  constructor(
+    private readonly createProjectUsecase: CreateProjectUsecase,
+    private readonly getMyProjectsUsecase: GetMyProjectsUsecase,
+  ) {}
 
   @Get('/')
   public async getProjects(@Req() request): Promise<ProjectM[]> {
@@ -16,6 +20,12 @@ export default class ProjectController {
   @Get('/:projectId')
   public async getProject(@Req() request): Promise<ProjectM> {
     return undefined;
+  }
+
+  @Get('/my-projects')
+  public async getMyProjects(@Req() request): Promise<ProjectM[]> {
+    const accountId = request.auth.accountId;
+    return this.getMyProjectsUsecase.handler(accountId);
   }
 
   @Post('')

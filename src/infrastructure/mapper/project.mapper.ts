@@ -34,7 +34,7 @@ export default class ProjectMapper {
   public static toDomainFromCreateProjectCommand(
     createProjectCommand: CreateProjectCommand,
   ): ProjectM {
-    return new ProjectM(
+    const projectModel = new ProjectM(
       undefined,
       createProjectCommand.name,
       undefined,
@@ -45,6 +45,11 @@ export default class ProjectMapper {
       createProjectCommand.organizationId,
       [],
     );
+    projectModel.jiraProjectKey = createProjectCommand.jiraProjectKey;
+    projectModel.jiraProjectName = createProjectCommand.jiraProjectName;
+    projectModel.isPrivateRepo = createProjectCommand.isPrivateRepo;
+    projectModel.repositoryName = createProjectCommand.repositoryName;
+    return projectModel;
   }
 
   public static toDomains(projectEntities: ProjectEntity[]): ProjectM[] {
