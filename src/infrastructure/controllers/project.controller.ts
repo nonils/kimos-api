@@ -13,11 +13,13 @@ export default class ProjectController {
   ) {}
 
   @Get('/')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async getProjects(@Req() request): Promise<ProjectM[]> {
     return undefined;
   }
 
   @Get('/:projectId')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async getProject(@Req() request): Promise<ProjectM> {
     return undefined;
   }
@@ -31,11 +33,14 @@ export default class ProjectController {
   @Post('')
   public async createProject(
     @Req() request,
-    @Body() projectCommand: CreateProjectCommand,
+    @Body() createProjectCommand: CreateProjectCommand,
   ): Promise<ProjectM> {
     const project =
-      ProjectMapper.toDomainFromCreateProjectCommand(projectCommand);
+      ProjectMapper.toDomainFromCreateProjectCommand(createProjectCommand);
     project.createdBy = request.auth.accountId;
-    return this.createProjectUsecase.handler(project);
+    return this.createProjectUsecase.handler(
+      project,
+      createProjectCommand.templateImplementationId,
+    );
   }
 }

@@ -32,6 +32,7 @@ export default class ProjectRepositoryPostgres
       jiraProjectKey: project.jiraProjectKey,
       jiraProjectName: project.jiraProjectName,
       repositoryName: project.repositoryName,
+      state: project.state,
     });
     return ProjectMapper.toDomain(projectCreated);
   }

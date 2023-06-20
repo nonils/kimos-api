@@ -46,9 +46,13 @@ export default class ProjectMapper {
       [],
     );
     projectModel.jiraProjectKey = createProjectCommand.jiraProjectKey;
+    projectModel.allowsJiraIntegration =
+      createProjectCommand.allowsJiraIntegration;
     projectModel.jiraProjectName = createProjectCommand.jiraProjectName;
     projectModel.isPrivateRepo = createProjectCommand.isPrivateRepo;
     projectModel.repositoryName = createProjectCommand.repositoryName;
+    projectModel.templateImplementationId =
+      createProjectCommand.templateImplementationId;
     return projectModel;
   }
 

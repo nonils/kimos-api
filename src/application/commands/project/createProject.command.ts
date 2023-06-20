@@ -27,7 +27,19 @@ export default class CreateProjectCommand {
   })
   repositoryName: string;
   @ApiProperty({
-    name: 'repositoryName',
+    name: 'templateImplementationId',
+    description: 'Id of the template implementation (UUID)',
+    example: 'faa3b3e0-9f1a-4e1a-8b1a-0b9e2b7b3b3e',
+  })
+  templateImplementationId: string;
+  @ApiProperty({
+    name: 'allowsJiraIntegration',
+    description: 'If the project allows jira integration',
+    example: true,
+  })
+  allowsJiraIntegration: boolean;
+  @ApiProperty({
+    name: 'jiraProjectKey',
     description: 'Key of the project in JIRA. (Just 3 or 4 characters)',
     example: 'TEST',
   })

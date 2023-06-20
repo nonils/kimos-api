@@ -8,7 +8,7 @@ on:
 env:
   AWS_REGION: us-east-2
   ECR_REPOSITORY: kimos-builds
-  ECS_SERVICE: your-ecs-service
+  ECS_SERVICE: your-ecs-services
   ECS_CLUSTER: kimos-api-dev-poc
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

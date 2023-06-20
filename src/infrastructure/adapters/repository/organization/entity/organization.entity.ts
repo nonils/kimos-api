@@ -4,6 +4,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
@@ -11,6 +12,7 @@ import { OrganizationMemberEntity } from '../../organization-member/entity/organ
 import { AccountEntity } from '../../account/entity/account.entity';
 import { ProjectEntity } from '../../project/entity/project.entity';
 import { PlanType } from '../../../../../domain/models/planType.enum';
+import { GithubIntegrationEntity } from '../../github-integration/entity/githubIntegration.entity';
 
 @Entity()
 export class OrganizationEntity extends BaseEntity {
@@ -83,6 +85,12 @@ export class OrganizationEntity extends BaseEntity {
     nullable: true,
   })
   deletedAt: Date;
+  @OneToOne(
+    () => GithubIntegrationEntity,
+    (githubIntegration) => githubIntegration.organization,
+    { eager: false },
+  )
+  githubIntegration: GithubIntegrationEntity;
   @OneToMany(
     () => OrganizationMemberEntity,
     (organizationMember) => organizationMember.organization,

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { TemplateImplementationM } from '../../../../domain/models';
 import { TemplateImplementationEntity } from './entity/templateImplementation.entity';
 import { TemplateImplementationMapper } from '../../../mapper/templateImplementation.mapper';
+import { Optional } from 'typescript-optional';
 
 @Injectable()
 export default class TemplateImplementationRepositoryPostgres
@@ -30,5 +31,13 @@ export default class TemplateImplementationRepositoryPostgres
         },
       });
     return TemplateImplementationMapper.toDomains(templateImplementations);
+  }
+
+  async findTemplateImplementationById(
+    id: string,
+  ): Promise<Optional<TemplateImplementationM>> {
+    const templateImplementationEntity =
+      await this.templateImplementationRepository.findOneBy({ id });
+    return TemplateImplementationMapper.toDomain(templateImplementationEntity);
   }
 }

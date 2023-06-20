@@ -1,4 +1,5 @@
 import { ProjectType } from './projectType.enum';
+import { ProjectState } from './projectState.enum';
 
 export class ProjectM {
   constructor(
@@ -23,8 +24,11 @@ export class ProjectM {
   name: string;
   isPrivateRepo: boolean;
   repositoryName: string;
+  state: ProjectState;
+  templateImplementationId: string;
   repositoryId: string;
   repositoryUrl: string;
+  allowsJiraIntegration: boolean;
   jiraProjectKey: string;
   jiraProjectName: string;
   jiraProjectId: string;

@@ -34,6 +34,8 @@ import { CICDProviderEntity } from '../infrastructure/adapters/repository/cicd-p
 import { CodeVersionManagerProviderEntity } from '../infrastructure/adapters/repository/code-version-manager-provider/entity/codeVersionManagerProvider.entity';
 import TemplateImplementationRepositoryPostgres from '../infrastructure/adapters/repository/template/templateImplementation.repository.postgres';
 import { TemplateImplementationEntity } from '../infrastructure/adapters/repository/template/entity/templateImplementation.entity';
+import { CodeVersionManagerServiceFactory } from '../infrastructure/adapters/factories/codeVersionManagerService.factory';
+import { GithubService } from '../infrastructure/adapters/services/github.service';
 
 @Module({
   imports: [
@@ -77,14 +79,6 @@ import { TemplateImplementationEntity } from '../infrastructure/adapters/reposit
     TemplateFactory,
     OrganizationFactory,
     GithubIntegrationFactory,
-    ...CLOUD_PROVIDER_USECASES,
-    ...CICD_PROVIDER_USECASES,
-    ...CODE_VERSION_MANAGER_PROVIDER_USECASES,
-    ...ACCOUNT_USECASES,
-    ...GITHUB_USECASES,
-    ...TEMPLATES_USECASES,
-    ...PROJECT_USECASES,
-    ...ORGANIZATION_USECASES,
     { provide: 'AccountRepository', useClass: AccountRepositoryPostgres },
     { provide: 'TemplateRepository', useClass: TemplateRepositoryPostgres },
     {
@@ -119,10 +113,25 @@ import { TemplateImplementationEntity } from '../infrastructure/adapters/reposit
       provide: 'GithubClient',
       useClass: GithubClient,
     },
+    {
+      provide: 'GithubService',
+      useClass: GithubService,
+    },
+    CodeVersionManagerServiceFactory,
+    ...CLOUD_PROVIDER_USECASES,
+    ...CICD_PROVIDER_USECASES,
+    ...CODE_VERSION_MANAGER_PROVIDER_USECASES,
+    ...ACCOUNT_USECASES,
+    ...GITHUB_USECASES,
+    ...TEMPLATES_USECASES,
+    ...PROJECT_USECASES,
+    ...ORGANIZATION_USECASES,
   ],
   exports: [
     TemplateFactory,
     OrganizationFactory,
+    GithubIntegrationFactory,
+    CodeVersionManagerServiceFactory,
     ...ACCOUNT_USECASES,
     ...CLOUD_PROVIDER_USECASES,
     ...CICD_PROVIDER_USECASES,

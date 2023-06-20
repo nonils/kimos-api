@@ -8,6 +8,7 @@ import {
   RelationId,
 } from 'typeorm';
 import { AccountEntity } from '../../account/entity/account.entity';
+import { OrganizationEntity } from '../../organization/entity/organization.entity';
 
 @Entity('Github_Integrations')
 export class GithubIntegrationEntity extends BaseEntity {
@@ -18,11 +19,24 @@ export class GithubIntegrationEntity extends BaseEntity {
   })
   @JoinColumn({ name: 'account_id' })
   account: AccountEntity;
-
   @RelationId(
     (githubIntegration: GithubIntegrationEntity) => githubIntegration.account,
   )
   accountId: string;
+  @ManyToOne(
+    () => OrganizationEntity,
+    (organization) => organization.githubIntegrations,
+    {
+      eager: false,
+    },
+  )
+  @JoinColumn({ name: 'organization_id' })
+  organization: OrganizationEntity;
+  @RelationId(
+    (githubIntegration: GithubIntegrationEntity) =>
+      githubIntegration.organization,
+  )
+  organizationId: string;
   @Column({ name: 'github_installation_id' })
   githubInstallationId: string;
   @Column({ name: 'target_type' })
@@ -39,4 +53,6 @@ export class GithubIntegrationEntity extends BaseEntity {
   createdAt: Date;
   @Column({ name: 'updated_at' })
   updatedAt: Date;
+  @Column({ name: 'deleted_at' })
+  deletedAt: Date;
 }

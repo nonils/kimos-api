@@ -63,6 +63,14 @@ export class ProjectEntity extends BaseEntity {
   repositoryUrl: string;
 
   @Column({
+    name: 'allows_jira_integration',
+    unique: false,
+    type: 'boolean',
+    nullable: false,
+    default: false,
+  })
+  allowsJiraIntegration: boolean;
+  @Column({
     name: 'jira_project_key',
     unique: false,
     type: 'varchar',
