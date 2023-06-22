@@ -13,8 +13,9 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: 'us-east-2'
-      SOURCE_DIR: 'dist'
-      DEST_DIR: 'kimos-api'
+      SOURCE_DIR: 'kimos-api.zip'
+      SOURCE_TO_BE_ZIPPED_DIR: 'dist'
+      DEST_DIR: 'kimos-api.zip'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -32,13 +33,13 @@ jobs:
 
       - name: Create ZIP archive
         run: |
-          cd $SOURCE_DIR
+          cd $SOURCE_TO_BE_ZIPPED_DIR
           zip -r $GITHUB_WORKSPACE/kimos-api.zip .
 
       - name: Deploy ZIP to S3
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
-          manifest: '{"aws-access-key-id": "${{ secrets.AWS_ACCESS_KEY_ID }}", "aws-secret-access-key": "${{ secrets.AWS_SECRET_ACCESS_KEY }}", "aws-region": "${{ env.AWS_REGION }}", "source": "kimos-api.zip", "destination": "kimos-api.zip", "cache-control": "max-age=3600"}'
+          manifest: '{"aws-access-key-id": "${{ secrets.AWS_ACCESS_KEY_ID }}", "aws-secret-access-key": "${{ secrets.AWS_SECRET_ACCESS_KEY }}", "aws-region": "${{ env.AWS_REGION }}", "source": "${{ env.SOURCE_DIR }}", "destination": "${{ env.DEST_DIR }}", "cache-control": "max-age=3600"}'
           upload-zip: true
           zip-name: 'kimos-api.zip'
