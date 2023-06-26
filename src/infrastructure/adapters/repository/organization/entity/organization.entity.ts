@@ -90,7 +90,7 @@ export class OrganizationEntity extends BaseEntity {
     (githubIntegration) => githubIntegration.organization,
     { eager: false },
   )
-  githubIntegration: GithubIntegrationEntity;
+  githubIntegrations: GithubIntegrationEntity;
   @OneToMany(
     () => OrganizationMemberEntity,
     (organizationMember) => organizationMember.organization,

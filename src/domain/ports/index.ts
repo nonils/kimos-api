@@ -6,3 +6,4 @@ export * from './templateImplementationRepository.interface';
 export * from './cloudProviderRepository.interface';
 export * from './githubIntegrationRepository.interface';
 export * from './codeVersionManagerService.interface';
+export * from './queueService.interface';

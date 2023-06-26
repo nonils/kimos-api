@@ -1,5 +1,2 @@
-import { GithubService } from './github.service';
-
-const SERVICES = [GithubService];
-
-export { SERVICES };
+export * from './github.service';
+export * from './queue.sqs.service';

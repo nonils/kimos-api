@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import { ProjectM, TemplateImplementationM } from '../../../domain/models';
 import {
   AccountRepositoryInterface,
+  IQueueService,
   OrganizationRepositoryInterface,
   ProjectRepositoryInterface,
   TemplateImplementationRepositoryInterface,
@@ -20,6 +21,8 @@ export class CreateProjectUsecase {
     @Inject('TemplateImplementationRepository')
     private readonly templateImplementationRepository: TemplateImplementationRepositoryInterface,
     private readonly codeVersionManagerFactory: CodeVersionManagerServiceFactory,
+    @Inject('QueueService')
+    private readonly queueService: IQueueService,
   ) {}
 
   public async handler(
@@ -70,7 +73,7 @@ export class CreateProjectUsecase {
       project.state = ProjectState.CREATED;
     }
     const optProject = await this.projectRepository.createProject(project);
-    //TODO CALL TO A SERVICE QUEUE TO CREATE THE REPOSITORY and all the stuff
+    await this.queueService.sendProjectCreatedEvent(optProject.get());
     return optProject.get();
   }
 

@@ -8,3 +8,4 @@ export * from './githubIntegration.model';
 export * from './cloudProvider.model';
 export * from './codeVersionManagmentProvider.model';
 export * from './CICDProvider.model';
+export * from './queueMessageSettings.interface';

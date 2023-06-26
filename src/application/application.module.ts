@@ -35,7 +35,10 @@ import { CodeVersionManagerProviderEntity } from '../infrastructure/adapters/rep
 import TemplateImplementationRepositoryPostgres from '../infrastructure/adapters/repository/template/templateImplementation.repository.postgres';
 import { TemplateImplementationEntity } from '../infrastructure/adapters/repository/template/entity/templateImplementation.entity';
 import { CodeVersionManagerServiceFactory } from '../infrastructure/adapters/factories/codeVersionManagerService.factory';
-import { GithubService } from '../infrastructure/adapters/services/github.service';
+import {
+  GithubService,
+  QueueSqsService,
+} from '../infrastructure/adapters/services';
 
 @Module({
   imports: [
@@ -116,6 +119,10 @@ import { GithubService } from '../infrastructure/adapters/services/github.servic
     {
       provide: 'GithubService',
       useClass: GithubService,
+    },
+    {
+      provide: 'QueueService',
+      useClass: QueueSqsService,
     },
     CodeVersionManagerServiceFactory,
     ...CLOUD_PROVIDER_USECASES,
