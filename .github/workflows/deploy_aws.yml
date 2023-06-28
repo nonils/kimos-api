@@ -48,6 +48,7 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
@@ -56,7 +57,29 @@ jobs:
           task-definition: task-definition.json
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
-
+          environment-variables: |
+            LOG_LEVEL=info
+            ENVIRONMENT=prod
+            NODE_NAME=
+            PORT=10101
+            REDIS_CONNECTION_STRING=
+            POSTGRES_HOST=
+            POSTGRES_PORT=
+            POSTGRES_USER=
+            POSTGRES_PASSWORD=
+            POSTGRES_DATABASE=
+            MODE=
+            RUN_MIGRATIONS=
+            GH_APP_NAME=fakename
+            GH_APP_URL=https://github.com/apps
+            GITHUB_APP_ID=
+            GITHUB_CLIENT_ID=
+            GITHUB_CLIENT_SECRET=
+            AUTH0_DOMAIN=
+            AUTH0_AUDIENCE=
+            CLIENT_ORIGIN_URL=
+            GITHUB_PRIVATE_KEY=
+            GITHUB_API_URL=https://api.github.com
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:

@@ -1,0 +1,32 @@
+{
+  "family": "kimos-api",
+  "networkMode": "bridge",
+  "containerDefinitions": [
+    {
+      "name": "api",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 10101,
+          "hostPort": 80
+        }
+      ],
+      "environment": [
+      ],
+      "links": [
+        "redis"
+      ]
+    },
+    {
+      "name": "redis",
+      "image": "redis:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 6379,
+          "hostPort": 10100
+        }
+      ]
+    }
+  ]
+}
