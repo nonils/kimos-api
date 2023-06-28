@@ -11,6 +11,7 @@
           "hostPort": 80
         }
       ],
+      "memory": 1024,
       "environment": [
       ]
     }
