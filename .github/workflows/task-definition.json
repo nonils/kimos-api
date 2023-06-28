@@ -13,6 +13,21 @@
       ],
       "memory": 1024,
       "environment": [
+      ],
+      "links": [
+        "redis"
+      ]
+    },
+    {
+      "name": "redis",
+      "image": "redis:latest",
+      "essential": true,
+      "memory": 1024,
+      "portMappings": [
+        {
+          "containerPort": 6379,
+          "hostPort": 10100
+        }
       ]
     }
   ]
