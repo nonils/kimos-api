@@ -60,26 +60,26 @@ jobs:
           environment-variables: |
             LOG_LEVEL=info
             ENVIRONMENT=prod
-            NODE_NAME=
-            PORT=10101
-            REDIS_CONNECTION_STRING=
-            POSTGRES_HOST=
-            POSTGRES_PORT=
-            POSTGRES_USER=
-            POSTGRES_PASSWORD=
-            POSTGRES_DATABASE=
-            MODE=
-            RUN_MIGRATIONS=
-            GH_APP_NAME=fakename
-            GH_APP_URL=https://github.com/apps
-            GITHUB_APP_ID=
-            GITHUB_CLIENT_ID=
-            GITHUB_CLIENT_SECRET=
-            AUTH0_DOMAIN=
-            AUTH0_AUDIENCE=
-            CLIENT_ORIGIN_URL=
-            GITHUB_PRIVATE_KEY=
-            GITHUB_API_URL=https://api.github.com
+            NODE_NAME=${{ secrets.NODE_NAME }}
+            PORT=${{ secrets.AWS_APP_PORT }}
+            REDIS_CONNECTION_STRING=${{ secrets.REDIS_CONNECTION_STRING }}
+            POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+            POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_DATABASE=${{ secrets.POSTGRES_DATABASE }}
+            MODE=${{ secrets.MODE }}
+            RUN_MIGRATIONS=${{ secrets.RUN_MIGRATIONS }}
+            GH_APP_NAME=${{ secrets.GH_APP_NAME }}
+            GH_APP_URL=${{ secrets.GH_APP_URL }}
+            GITHUB_APP_ID=${{ secrets.GITHUB_APP_ID }}
+            GITHUB_CLIENT_ID=${{ secrets.GITHUB_CLIENT_ID }}
+            GITHUB_CLIENT_SECRET=${{ secrets.GITHUB_CLIENT_SECRET }}
+            AUTH0_DOMAIN=${{ secrets.AUTH0_DOMAIN }}
+            AUTH0_AUDIENCE=${{ secrets.AUTH0_AUDIENCE }}
+            CLIENT_ORIGIN_URL=${{ secrets.CLIENT_ORIGIN_URL }}
+            GITHUB_PRIVATE_KEY=${{ secrets.GITHUB_PRIVATE_KEY }}
+            GITHUB_API_URL=${{ secrets.GITHUB_API_URL }}
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
