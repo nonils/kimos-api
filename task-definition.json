@@ -3,7 +3,7 @@
   "networkMode": "bridge",
   "containerDefinitions": [
     {
-      "name": "api",
+      "name": "kimos-api",
       "essential": true,
       "portMappings": [
         {
@@ -12,20 +12,6 @@
         }
       ],
       "environment": [
-      ],
-      "links": [
-        "redis"
-      ]
-    },
-    {
-      "name": "redis",
-      "image": "redis:latest",
-      "essential": true,
-      "portMappings": [
-        {
-          "containerPort": 6379,
-          "hostPort": 10100
-        }
       ]
     }
   ]
