@@ -22,6 +22,29 @@ export default class ProjectRepositoryPostgres
     return ProjectMapper.toDomains(projects);
   }
 
+  public async getAllPaginatedByAccountAndOrganizations(
+    page: number,
+    size: number,
+    accountId: string,
+    organizationIds: string[],
+  ): Promise<ProjectM[]> {
+    this.projectEntityRepository
+      .createQueryBuilder('project')
+      .where('project.account.id = :accountId', { accountId })
+      .orWhere('project.organization.id IN (:...organizationIds)', {
+        organizationIds,
+      });
+
+    const projects = await this.projectEntityRepository.find({
+      where: {
+        account: {
+          id: accountId,
+        },
+      },
+    });
+    return ProjectMapper.toDomains(projects);
+  }
+
   public async createProject(project: ProjectM): Promise<Optional<ProjectM>> {
     const projectCreated = await this.projectEntityRepository.save({
       name: project.name,

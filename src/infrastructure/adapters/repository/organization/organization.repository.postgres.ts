@@ -17,6 +17,19 @@ export default class OrganizationRepositoryPostgres
     private organizationEntityRepository: Repository<OrganizationEntity>,
   ) {}
 
+  async getOrganizationsByAccountId(
+    accountId: string,
+  ): Promise<OrganizationM[]> {
+    const result = await this.organizationEntityRepository.find({
+      where: {
+        owner: {
+          id: accountId,
+        },
+      },
+    });
+    return OrganizationMapper.toDomains(result);
+  }
+
   async getOrganizationById(id: string): Promise<Optional<OrganizationM>> {
     const result = await this.organizationEntityRepository.findOneBy({ id });
     return OrganizationMapper.toDomain(result);

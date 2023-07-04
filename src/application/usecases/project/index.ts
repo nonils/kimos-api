@@ -1,4 +1,4 @@
 import { CreateProjectUsecase } from './createProject.usecase';
-import { GetMyProjectsUsecase } from './getMyProjects.usecase';
+import { GetProjectsUsecase } from './getProjects.usecase';
 
-export const PROJECT_USECASES = [CreateProjectUsecase, GetMyProjectsUsecase];
+export const PROJECT_USECASES = [CreateProjectUsecase, GetProjectsUsecase];

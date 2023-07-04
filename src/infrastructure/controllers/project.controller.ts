@@ -1,33 +1,29 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { ProjectM } from '../../domain/models';
 import { CreateProjectUsecase } from '../../application/usecases/project/createProject.usecase';
 import CreateProjectCommand from '../../application/commands/project/createProject.command';
 import ProjectMapper from '../mapper/project.mapper';
-import { GetMyProjectsUsecase } from '../../application/usecases/project/getMyProjects.usecase';
+import { GetProjectsUsecase } from '../../application/usecases/project/getProjects.usecase';
 
 @Controller('/api/v1/projects')
 export default class ProjectController {
   constructor(
     private readonly createProjectUsecase: CreateProjectUsecase,
-    private readonly getMyProjectsUsecase: GetMyProjectsUsecase,
+    private readonly getProjectsUsecase: GetProjectsUsecase,
   ) {}
 
   @Get('/')
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async getProjects(@Req() request): Promise<ProjectM[]> {
-    return undefined;
+  public async getProjects(
+    @Req() request,
+    @Query('page') page = 0,
+    @Query('size') size = 10,
+  ): Promise<ProjectM[]> {
+    return this.getProjectsUsecase.handler(page, size, request.auth.accountId);
   }
 
   @Get('/:projectId')
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async getProject(@Req() request): Promise<ProjectM> {
     return undefined;
-  }
-
-  @Get('/my-projects')
-  public async getMyProjects(@Req() request): Promise<ProjectM[]> {
-    const accountId = request.auth.accountId;
-    return this.getMyProjectsUsecase.handler(accountId);
   }
 
   @Post('')
