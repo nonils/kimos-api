@@ -25,7 +25,7 @@
       "workingDirectory": null,
       "secrets": null,
       "dockerSecurityOptions": null,
-      "memory": null,
+      "memory": 256,
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
@@ -36,7 +36,6 @@
       "interactive": null,
       "healthCheck": null,
       "essential": true,
-      "links": null,
       "hostname": null,
       "extraHosts": null,
       "pseudoTerminal": null,
@@ -45,7 +44,22 @@
       "dockerLabels": null,
       "systemControls": null,
       "privileged": null,
-      "name": "kimos-api"
+      "name": "kimos-api",
+      "links": [
+        "redis"
+      ]
+    },
+    {
+      "name": "redis",
+      "image": "redis:latest",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "containerPort": 6379,
+          "hostPort": 6379
+        }
+      ]
     }
   ],
   "placementConstraints": [],
