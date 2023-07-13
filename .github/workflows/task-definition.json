@@ -9,7 +9,7 @@
       "entryPoint": [],
       "portMappings": [
         {
-          "hostPort": 80,
+          "hostPort": 10101,
           "protocol": "tcp",
           "containerPort": 10101
         }
