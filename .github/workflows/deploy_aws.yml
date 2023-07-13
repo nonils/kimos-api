@@ -59,6 +59,7 @@ jobs:
           image: ${{ steps.build-image.outputs.image }}
           environment-variables: |
             LOG_LEVEL=info
+            ECS_AVAILABLE_LOGGING_DRIVERS='["json-file","awslogs"]'
             ENVIRONMENT=prod
             NODE_NAME=${{ secrets.NODE_NAME }}
             PORT=${{ secrets.AWS_APP_PORT }}
