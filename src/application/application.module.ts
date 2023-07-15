@@ -39,6 +39,7 @@ import {
   GithubService,
   QueueSqsService,
 } from '../infrastructure/adapters/services';
+import ProjectFactory from './factory/project.factory';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import {
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
+        logging: true,
         host: configService.get(Configuration.POSTGRES_HOST),
         port: configService.get(Configuration.POSTGRES_PORT),
         username: configService.get(Configuration.POSTGRES_USER),
@@ -80,6 +82,7 @@ import {
   ],
   providers: [
     TemplateFactory,
+    ProjectFactory,
     OrganizationFactory,
     GithubIntegrationFactory,
     { provide: 'AccountRepository', useClass: AccountRepositoryPostgres },
@@ -136,6 +139,7 @@ import {
   ],
   exports: [
     TemplateFactory,
+    ProjectFactory,
     OrganizationFactory,
     GithubIntegrationFactory,
     CodeVersionManagerServiceFactory,

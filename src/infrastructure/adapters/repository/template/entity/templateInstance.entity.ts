@@ -2,21 +2,33 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 import { TemplateImplementationEntity } from './templateImplementation.entity';
 import { ProjectEntity } from '../../project/entity/project.entity';
 import { TemplateFieldValueEntity } from './templateFieldValue.entity';
 
-@Entity()
+@Entity('Template_Instances')
 export class TemplateInstanceEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+  @RelationId(
+    (templateInstance: TemplateInstanceEntity) =>
+      templateInstance.templateImplementation,
+  )
+  templateImplementationId: string;
   @ManyToOne(() => TemplateImplementationEntity)
-  templateImplementationId: TemplateImplementationEntity;
-  @ManyToOne(() => ProjectEntity, (project) => project.templateInstances)
+  @JoinColumn({ name: 'template_implementation_id' })
+  templateImplementation: TemplateImplementationEntity;
+  @OneToOne(() => ProjectEntity, (project) => project.templateInstance)
+  @JoinColumn({
+    name: 'project_id',
+  })
   project: ProjectEntity;
   @Column({
     name: 'is_deleted',

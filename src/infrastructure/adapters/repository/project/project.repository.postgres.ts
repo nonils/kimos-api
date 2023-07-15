@@ -28,20 +28,33 @@ export default class ProjectRepositoryPostgres
     accountId: string,
     organizationIds: string[],
   ): Promise<ProjectM[]> {
-    this.projectEntityRepository
+    let query = this.projectEntityRepository
       .createQueryBuilder('project')
-      .where('project.account.id = :accountId', { accountId })
-      .orWhere('project.organization.id IN (:...organizationIds)', {
-        organizationIds,
-      });
-
-    const projects = await this.projectEntityRepository.find({
-      where: {
-        account: {
-          id: accountId,
+      .innerJoin('project.templateInstance', 'templateInstance')
+      .innerJoin(
+        'templateInstance.templateImplementation',
+        'templateImplementation',
+      )
+      .innerJoin('templateImplementation.cicdProvider', 'cicdProvider')
+      .innerJoin('templateImplementation.cloudProvider', 'cloudProvider')
+      .innerJoin(
+        'templateImplementation.codeVersionManagerProvider',
+        'codeVersionManagerProvider',
+      )
+      .innerJoin('templateImplementation.template', 'template')
+      .where('project.account.id = :accountId', { accountId });
+    if (organizationIds.length > 0) {
+      query = query.orWhere(
+        'project.organization.id IN (:...organizationIds)',
+        {
+          organizationIds,
         },
-      },
-    });
+      );
+    }
+    const projects = await query
+      .skip(page * size)
+      .take(size)
+      .getMany();
     return ProjectMapper.toDomains(projects);
   }
 
@@ -100,6 +113,7 @@ export default class ProjectRepositoryPostgres
     });
     return ProjectMapper.toDomains(projectEntities);
   }
+
   async findByOwnerAndName(ownerId: string, name: string): Promise<ProjectM[]> {
     const projectEntities = await this.projectEntityRepository.find({
       where: {

@@ -4,10 +4,12 @@ import { CreateProjectUsecase } from '../../application/usecases/project/createP
 import CreateProjectCommand from '../../application/commands/project/createProject.command';
 import ProjectMapper from '../mapper/project.mapper';
 import { GetProjectsUsecase } from '../../application/usecases/project/getProjects.usecase';
+import ProjectFactory from '../../application/factory/project.factory';
 
 @Controller('/api/v1/projects')
 export default class ProjectController {
   constructor(
+    private readonly projectFactory: ProjectFactory,
     private readonly createProjectUsecase: CreateProjectUsecase,
     private readonly getProjectsUsecase: GetProjectsUsecase,
   ) {}
@@ -31,8 +33,7 @@ export default class ProjectController {
     @Req() request,
     @Body() createProjectCommand: CreateProjectCommand,
   ): Promise<ProjectM> {
-    const project =
-      ProjectMapper.toDomainFromCreateProjectCommand(createProjectCommand);
+    const project = this.projectFactory.createProject(createProjectCommand);
     project.createdBy = request.auth.accountId;
     return this.createProjectUsecase.handler(
       project,

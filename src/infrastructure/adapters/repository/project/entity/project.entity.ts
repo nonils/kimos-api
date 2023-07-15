@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
@@ -169,12 +170,12 @@ export class ProjectEntity extends BaseEntity {
     referencedColumnName: 'id',
   })
   organization: OrganizationEntity;
-  @OneToMany(
+  @OneToOne(
     () => TemplateInstanceEntity,
     (templateInstance) => templateInstance.project,
     {
       eager: false,
     },
   )
-  templateInstances: TemplateInstanceEntity[];
+  templateInstance: TemplateInstanceEntity;
 }

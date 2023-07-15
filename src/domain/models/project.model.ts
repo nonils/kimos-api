@@ -7,8 +7,15 @@ export class ProjectM {
     name: string,
     createdBy: string,
     description: string,
-    type: ProjectType,
     organizationId: string,
+    type: ProjectType,
+    repositoryId: string,
+    repositoryName: string,
+    repositoryUrl: string,
+    jiraProjectId: string,
+    jiraProjectName: string,
+    jiraProjectKey: string,
+    allowsJiraIntegration: boolean,
     integrations: string[] = [],
   ) {
     this.id = id;
@@ -16,6 +23,13 @@ export class ProjectM {
     this.createdBy = createdBy;
     this.description = description;
     this.organizationId = organizationId;
+    this.repositoryId = repositoryId;
+    this.repositoryName = repositoryName;
+    this.repositoryUrl = repositoryUrl;
+    this.jiraProjectId = jiraProjectId;
+    this.jiraProjectName = jiraProjectName;
+    this.jiraProjectKey = jiraProjectKey;
+    this.allowsJiraIntegration = allowsJiraIntegration;
     this.type = type;
     this.integrations = integrations;
   }
@@ -32,6 +46,7 @@ export class ProjectM {
   jiraProjectKey: string;
   jiraProjectName: string;
   jiraProjectId: string;
+  jiraProjectUrl: string;
   createdBy: string;
   organizationId: string;
   description: string;

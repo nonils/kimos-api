@@ -1,8 +1,7 @@
 import { Optional } from 'typescript-optional';
 import { ProjectEntity } from '../adapters/repository/project/entity/project.entity';
-import { ProjectM, ProjectType } from '../../domain/models';
+import { ProjectM } from '../../domain/models';
 import { AccountEntity } from '../adapters/repository/account/entity/account.entity';
-import CreateProjectCommand from '../../application/commands/project/createProject.command';
 
 export default class ProjectMapper {
   public static toEntity(project: ProjectM): ProjectEntity {
@@ -23,37 +22,22 @@ export default class ProjectMapper {
       projectEntity.name,
       projectEntity.account.id,
       projectEntity.description,
+      projectEntity.organizationId,
       projectEntity.type,
-      '',
+      projectEntity.repositoryId,
+      projectEntity.repositoryName,
+      projectEntity.repositoryUrl,
+      projectEntity.jiraProjectId,
+      projectEntity.jiraProjectName,
+      projectEntity.jiraProjectKey,
+      projectEntity.allowsJiraIntegration,
       [],
     );
+    project.isPrivateRepo = projectEntity.isPrivateRepo;
+    project.templateImplementationId =
+      projectEntity.templateInstance?.templateImplementationId;
     project.setCreateAt(new Date(projectEntity.createdAt));
     return Optional.of(project);
-  }
-
-  public static toDomainFromCreateProjectCommand(
-    createProjectCommand: CreateProjectCommand,
-  ): ProjectM {
-    const projectModel = new ProjectM(
-      undefined,
-      createProjectCommand.name,
-      undefined,
-      createProjectCommand.description,
-      createProjectCommand.organizationId
-        ? ProjectType.ORGANIZATION
-        : ProjectType.PERSONAL,
-      createProjectCommand.organizationId,
-      [],
-    );
-    projectModel.jiraProjectKey = createProjectCommand.jiraProjectKey;
-    projectModel.allowsJiraIntegration =
-      createProjectCommand.allowsJiraIntegration;
-    projectModel.jiraProjectName = createProjectCommand.jiraProjectName;
-    projectModel.isPrivateRepo = createProjectCommand.isPrivateRepo;
-    projectModel.repositoryName = createProjectCommand.repositoryName;
-    projectModel.templateImplementationId =
-      createProjectCommand.templateImplementationId;
-    return projectModel;
   }
 
   public static toDomains(projectEntities: ProjectEntity[]): ProjectM[] {

@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -14,7 +15,7 @@ import { ProjectEntity } from '../../project/entity/project.entity';
 import { PlanType } from '../../../../../domain/models/planType.enum';
 import { GithubIntegrationEntity } from '../../github-integration/entity/githubIntegration.entity';
 
-@Entity()
+@Entity('Organizations')
 export class OrganizationEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -109,6 +110,9 @@ export class OrganizationEntity extends BaseEntity {
 
   @ManyToOne(() => AccountEntity, (account) => account.organizations, {
     eager: false,
+  })
+  @JoinColumn({
+    name: 'owner_id',
   })
   owner: AccountEntity;
 }
