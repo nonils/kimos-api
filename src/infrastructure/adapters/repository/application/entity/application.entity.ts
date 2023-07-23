@@ -9,19 +9,20 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
-import { TemplateImplementationEntity } from './templateImplementation.entity';
+import { TemplateImplementationEntity } from '../../template/entity/templateImplementation.entity';
 import { ProjectEntity } from '../../project/entity/project.entity';
-import { TemplateFieldValueEntity } from './templateFieldValue.entity';
+import { TemplateFieldValueEntity } from '../../template/entity/templateFieldValue.entity';
 
-@Entity('Template_Instances')
-export class TemplateInstanceEntity extends BaseEntity {
+@Entity('Applications')
+export class ApplicationEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @RelationId(
-    (templateInstance: TemplateInstanceEntity) =>
-      templateInstance.templateImplementation,
+    (application: ApplicationEntity) => application.templateImplementation,
   )
   templateImplementationId: string;
+  @RelationId((templateInstance: ApplicationEntity) => templateInstance.project)
+  projectId: string;
   @ManyToOne(() => TemplateImplementationEntity)
   @JoinColumn({ name: 'template_implementation_id' })
   templateImplementation: TemplateImplementationEntity;
@@ -61,7 +62,7 @@ export class TemplateInstanceEntity extends BaseEntity {
   deletedAt: Date;
   @OneToMany(
     () => TemplateFieldValueEntity,
-    (templateValue) => templateValue.templateInstance,
+    (templateValue) => templateValue.application,
     { eager: false },
   )
   templateValues: TemplateFieldValueEntity[];

@@ -39,6 +39,12 @@ export class projectTable1683684327810 implements MigrationInterface {
             enum: ['PERSONAL', 'ORGANIZATION'],
           },
           {
+            name: 'created_by',
+            isUnique: false,
+            type: 'uuid',
+            isNullable: false,
+          },
+          {
             name: 'account_id',
             isUnique: false,
             type: 'uuid',
@@ -76,6 +82,15 @@ export class projectTable1683684327810 implements MigrationInterface {
         ],
       }),
       true,
+    );
+    await queryRunner.createForeignKey(
+      'Projects',
+      new TableForeignKey({
+        columnNames: ['created_by'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'Accounts',
+        onDelete: 'CASCADE',
+      }),
     );
     await queryRunner.createForeignKey(
       'Projects',

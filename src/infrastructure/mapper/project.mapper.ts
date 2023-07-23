@@ -24,16 +24,7 @@ export default class ProjectMapper {
       projectEntity.description,
       projectEntity.organizationId,
       projectEntity.type,
-      projectEntity.repositoryId,
-      projectEntity.repositoryName,
-      projectEntity.repositoryUrl,
-      projectEntity.jiraProjectId,
-      projectEntity.jiraProjectName,
-      projectEntity.jiraProjectKey,
-      projectEntity.allowsJiraIntegration,
-      [],
     );
-    project.isPrivateRepo = projectEntity.isPrivateRepo;
     project.templateImplementationId =
       projectEntity.templateInstance?.templateImplementationId;
     project.setCreateAt(new Date(projectEntity.createdAt));

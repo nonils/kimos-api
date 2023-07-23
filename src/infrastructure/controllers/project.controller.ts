@@ -2,7 +2,6 @@ import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { ProjectM } from '../../domain/models';
 import { CreateProjectUsecase } from '../../application/usecases/project/createProject.usecase';
 import CreateProjectCommand from '../../application/commands/project/createProject.command';
-import ProjectMapper from '../mapper/project.mapper';
 import { GetProjectsUsecase } from '../../application/usecases/project/getProjects.usecase';
 import ProjectFactory from '../../application/factory/project.factory';
 
@@ -35,9 +34,6 @@ export default class ProjectController {
   ): Promise<ProjectM> {
     const project = this.projectFactory.createProject(createProjectCommand);
     project.createdBy = request.auth.accountId;
-    return this.createProjectUsecase.handler(
-      project,
-      createProjectCommand.templateImplementationId,
-    );
+    return this.createProjectUsecase.handler(project);
   }
 }

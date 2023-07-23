@@ -40,6 +40,8 @@ import {
   QueueSqsService,
 } from '../infrastructure/adapters/services';
 import ProjectFactory from './factory/project.factory';
+import ApplicationRepositoryPostgres from '../infrastructure/adapters/repository/application/applicationRepositoryPostgres';
+import { ApplicationEntity } from '../infrastructure/adapters/repository/application/entity/application.entity';
 
 @Module({
   imports: [
@@ -61,6 +63,7 @@ import ProjectFactory from './factory/project.factory';
     }),
     TypeOrmModule.forFeature([
       AccountEntity,
+      ApplicationEntity,
       CICDProviderEntity,
       CloudProviderEntity,
       CodeVersionManagerProviderEntity,
@@ -87,6 +90,10 @@ import ProjectFactory from './factory/project.factory';
     GithubIntegrationFactory,
     { provide: 'AccountRepository', useClass: AccountRepositoryPostgres },
     { provide: 'TemplateRepository', useClass: TemplateRepositoryPostgres },
+    {
+      provide: 'ApplicationRepository',
+      useClass: ApplicationRepositoryPostgres,
+    },
     {
       provide: 'TemplateImplementationRepository',
       useClass: TemplateImplementationRepositoryPostgres,

@@ -30,18 +30,6 @@ export default class ProjectRepositoryPostgres
   ): Promise<ProjectM[]> {
     let query = this.projectEntityRepository
       .createQueryBuilder('project')
-      .innerJoin('project.templateInstance', 'templateInstance')
-      .innerJoin(
-        'templateInstance.templateImplementation',
-        'templateImplementation',
-      )
-      .innerJoin('templateImplementation.cicdProvider', 'cicdProvider')
-      .innerJoin('templateImplementation.cloudProvider', 'cloudProvider')
-      .innerJoin(
-        'templateImplementation.codeVersionManagerProvider',
-        'codeVersionManagerProvider',
-      )
-      .innerJoin('templateImplementation.template', 'template')
       .where('project.account.id = :accountId', { accountId });
     if (organizationIds.length > 0) {
       query = query.orWhere(
@@ -63,12 +51,9 @@ export default class ProjectRepositoryPostgres
       name: project.name,
       description: project.description,
       type: project.type,
+      createdBy: { id: project.createdBy },
       account: { id: project.createdBy },
-      isPrivateRepo: project.isPrivateRepo,
-      jiraProjectKey: project.jiraProjectKey,
-      jiraProjectName: project.jiraProjectName,
-      repositoryName: project.repositoryName,
-      state: project.state,
+      organization: { id: project.organizationId },
     });
     return ProjectMapper.toDomain(projectCreated);
   }

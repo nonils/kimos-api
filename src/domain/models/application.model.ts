@@ -1,30 +1,18 @@
 export class ApplicationM {
-  constructor(
-    id: string,
-    name: string,
-    githubRepositoryName: string,
-    appTemplateId: string,
-    appTemplateVersion: string,
-  ) {
+  constructor(id: string, templateImplementationId: string, projectId: string) {
     this.id = id;
-    this.name = name;
-    this.githubRepositoryName = githubRepositoryName;
-    this.appTemplateId = appTemplateVersion;
-    this.appTemplateVersion = appTemplateVersion;
+    this.templateImplementationId = templateImplementationId;
+    this.projectId = projectId;
   }
 
   id: string;
-  name: string;
-  githubRepositoryName: string;
-  appTemplateId: string;
-  appTemplateVersion: string;
+  projectId: string;
+  templateImplementationId: string;
   createdAt: Date;
   updatedAt: Date;
+  isDeleted: boolean;
 
   setCreateAt(date: Date) {
     this.createdAt = date;
-  }
-  setUpdatedAt(date: Date) {
-    this.updatedAt = date;
   }
 }

@@ -2,14 +2,11 @@ import {
   BaseEntity,
   Column,
   Entity,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
-import { TechnologyEntity } from '../../technology/entity/technology.entity';
-import { TemplateEntity } from './template.entity';
-import { TemplateInstanceEntity } from './templateInstance.entity';
+import { ApplicationEntity } from '../../application/entity/application.entity';
 
 @Entity()
 export class TemplateFieldValueEntity extends BaseEntity {
@@ -23,14 +20,14 @@ export class TemplateFieldValueEntity extends BaseEntity {
   value: string;
   @RelationId(
     (templateFieldValue: TemplateFieldValueEntity) =>
-      templateFieldValue.templateInstance,
+      templateFieldValue.application,
   )
-  templateInstanceId: string;
+  applicationId: string;
   @ManyToOne(
-    () => TemplateInstanceEntity,
-    (templateInstance) => templateInstance.templateValues,
+    () => ApplicationEntity,
+    (application) => application.templateValues,
   )
-  templateInstance: TemplateInstanceEntity;
+  application: ApplicationEntity;
   @Column({
     name: 'is_deleted',
     type: 'boolean',
