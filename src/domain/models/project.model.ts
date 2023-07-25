@@ -1,5 +1,4 @@
 import { ProjectType } from './projectType.enum';
-import { ProjectState } from './projectState.enum';
 
 export class ProjectM {
   constructor(
@@ -22,7 +21,9 @@ export class ProjectM {
   name: string;
   templateImplementationId: string;
   createdBy: string;
+  createdByUser: string;
   organizationId: string;
+  organizationName: string;
   description: string;
   type: ProjectType;
   createdAt: Date;

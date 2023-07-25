@@ -20,13 +20,14 @@ export default class ProjectMapper {
     const project = new ProjectM(
       projectEntity.id,
       projectEntity.name,
-      projectEntity.account.id,
+      projectEntity.accountId,
       projectEntity.description,
       projectEntity.organizationId,
       projectEntity.type,
     );
-    project.templateImplementationId =
-      projectEntity.templateInstance?.templateImplementationId;
+    project.createdByUser =
+      projectEntity.createdBy?.name + ' ' + projectEntity.createdBy?.lastName;
+    project.organizationName = projectEntity.organization?.name;
     project.setCreateAt(new Date(projectEntity.createdAt));
     return Optional.of(project);
   }

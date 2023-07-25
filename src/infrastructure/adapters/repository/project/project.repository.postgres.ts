@@ -30,6 +30,9 @@ export default class ProjectRepositoryPostgres
   ): Promise<ProjectM[]> {
     let query = this.projectEntityRepository
       .createQueryBuilder('project')
+      .leftJoinAndSelect('project.organization', 'organization')
+      .leftJoinAndSelect('project.createdBy', 'createdBy')
+      .leftJoinAndSelect('project.account', 'account')
       .where('project.account.id = :accountId', { accountId });
     if (organizationIds.length > 0) {
       query = query.orWhere(
@@ -109,5 +112,25 @@ export default class ProjectRepositoryPostgres
       },
     });
     return ProjectMapper.toDomains(projectEntities);
+  }
+
+  countProjectsByAccountAndOrganizations(
+    accountId: string,
+    organizationIds: string[],
+  ): Promise<number> {
+    let query = this.projectEntityRepository
+      .createQueryBuilder('project')
+      .where('project.account.id = :accountId', { accountId });
+
+    if (organizationIds.length > 0) {
+      query = query.orWhere(
+        'project.organization.id IN (:...organizationIds)',
+        {
+          organizationIds,
+        },
+      );
+    }
+
+    return query.getCount();
   }
 }

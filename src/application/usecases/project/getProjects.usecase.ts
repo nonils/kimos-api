@@ -3,7 +3,7 @@ import {
   OrganizationRepositoryInterface,
   ProjectRepositoryInterface,
 } from '../../../domain/ports';
-import { ProjectM } from '../../../domain/models';
+import { Page, ProjectM } from '../../../domain/models';
 
 @Injectable()
 export class GetProjectsUsecase {
@@ -18,14 +18,24 @@ export class GetProjectsUsecase {
     page: number,
     size: number,
     accountId: string,
-  ): Promise<ProjectM[]> {
-    const organizationIds =
+  ): Promise<Page<ProjectM>> {
+    const organizations =
       await this.organizationRepository.getOrganizationsByAccountId(accountId);
-    return this.projectRepository.getAllPaginatedByAccountAndOrganizations(
-      page,
-      size,
-      accountId,
-      organizationIds.map((organization) => organization.id),
+    const organizationIds = organizations.map(
+      (organization) => organization.id,
     );
+    const [projects, countOfProjects] = await Promise.all([
+      this.projectRepository.getAllPaginatedByAccountAndOrganizations(
+        page,
+        size,
+        accountId,
+        organizationIds,
+      ),
+      this.projectRepository.countProjectsByAccountAndOrganizations(
+        accountId,
+        organizationIds,
+      ),
+    ]);
+    return new Page<ProjectM>(projects, page, size, countOfProjects);
   }
 }

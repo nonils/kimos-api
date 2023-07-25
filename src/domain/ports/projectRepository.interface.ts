@@ -51,4 +51,12 @@ export interface ProjectRepositoryInterface {
   findByOwner(ownerId: string): Promise<ProjectM[]>;
 
   findByOwnerAndName(ownerId: string, name: string): Promise<ProjectM[]>;
+
+  /*
+   * Count the number of projects by account and organizations
+   * */
+  countProjectsByAccountAndOrganizations(
+    accountId: string,
+    organizationIds: string[],
+  ): Promise<number>;
 }

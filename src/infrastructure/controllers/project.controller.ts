@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
-import { ProjectM } from '../../domain/models';
+import { Page, ProjectM } from '../../domain/models';
 import { CreateProjectUsecase } from '../../application/usecases/project/createProject.usecase';
 import CreateProjectCommand from '../../application/commands/project/createProject.command';
 import { GetProjectsUsecase } from '../../application/usecases/project/getProjects.usecase';
@@ -18,7 +18,7 @@ export default class ProjectController {
     @Req() request,
     @Query('page') page = 0,
     @Query('size') size = 10,
-  ): Promise<ProjectM[]> {
+  ): Promise<Page<ProjectM>> {
     return this.getProjectsUsecase.handler(page, size, request.auth.accountId);
   }
 
