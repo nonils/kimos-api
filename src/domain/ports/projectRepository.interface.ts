@@ -1,6 +1,5 @@
 import { Optional } from 'typescript-optional';
-import { ProjectM } from '../models/project.model';
-import ProjectMapper from '../../infrastructure/mapper/project.mapper';
+import { ProjectM } from '../models';
 
 export interface ProjectRepositoryInterface {
   /**
@@ -59,4 +58,11 @@ export interface ProjectRepositoryInterface {
     accountId: string,
     organizationIds: string[],
   ): Promise<number>;
+
+  /**
+   * Returns a project by id
+   * @param projectId the project id
+   * @returns a `Project` object containing the data.
+   * */
+  getById(projectId: string): Promise<Optional<ProjectM>>;
 }

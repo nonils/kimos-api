@@ -25,6 +25,7 @@ export default class ProjectMapper {
       projectEntity.organizationId,
       projectEntity.type,
     );
+    project.accountId = projectEntity.accountId;
     project.createdByUser =
       projectEntity.createdBy?.name + ' ' + projectEntity.createdBy?.lastName;
     project.organizationName = projectEntity.organization?.name;

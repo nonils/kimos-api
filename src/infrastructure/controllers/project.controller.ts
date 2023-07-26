@@ -4,6 +4,7 @@ import { CreateProjectUsecase } from '../../application/usecases/project/createP
 import CreateProjectCommand from '../../application/commands/project/createProject.command';
 import { GetProjectsUsecase } from '../../application/usecases/project/getProjects.usecase';
 import ProjectFactory from '../../application/factory/project.factory';
+import { GetProjectByIdUsecase } from '../../application/usecases/project/getProjectById.usecase';
 
 @Controller('/api/v1/projects')
 export default class ProjectController {
@@ -11,6 +12,7 @@ export default class ProjectController {
     private readonly projectFactory: ProjectFactory,
     private readonly createProjectUsecase: CreateProjectUsecase,
     private readonly getProjectsUsecase: GetProjectsUsecase,
+    private readonly getProjectByIdUsecase: GetProjectByIdUsecase,
   ) {}
 
   @Get('/')
@@ -24,7 +26,10 @@ export default class ProjectController {
 
   @Get('/:projectId')
   public async getProject(@Req() request): Promise<ProjectM> {
-    return undefined;
+    return this.getProjectByIdUsecase.handler(
+      request.params.projectId,
+      request.auth.accountId,
+    );
   }
 
   @Post('')

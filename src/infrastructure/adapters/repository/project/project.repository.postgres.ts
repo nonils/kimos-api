@@ -133,4 +133,11 @@ export default class ProjectRepositoryPostgres
 
     return query.getCount();
   }
+
+  async getById(projectId: string): Promise<Optional<ProjectM>> {
+    const project = await this.projectEntityRepository.findOneBy({
+      id: projectId,
+    });
+    return ProjectMapper.toDomain(project);
+  }
 }

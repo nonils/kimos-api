@@ -22,6 +22,7 @@ export class ProjectM {
   templateImplementationId: string;
   createdBy: string;
   createdByUser: string;
+  accountId: string;
   organizationId: string;
   organizationName: string;
   description: string;
