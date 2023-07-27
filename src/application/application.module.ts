@@ -22,6 +22,7 @@ import { OrganizationEntity } from '../infrastructure/adapters/repository/organi
 import { ProjectEntity } from '../infrastructure/adapters/repository/project/entity/project.entity';
 import OrganizationFactory from './factory/organization.factory';
 import { PROJECT_USECASES } from './usecases/project';
+import { APPLICATION_USECASES } from './usecases/application';
 import ProjectRepositoryPostgres from '../infrastructure/adapters/repository/project/project.repository.postgres';
 import CloudProviderRepositoryPostgres from '../infrastructure/adapters/repository/cloud-provider/cloudProvider.repository.postgres';
 import CICDProviderRepositoryPostgres from '../infrastructure/adapters/repository/cicd-provider/cicdProvider.repository.postgres';
@@ -142,6 +143,7 @@ import { ApplicationEntity } from '../infrastructure/adapters/repository/applica
     ...GITHUB_USECASES,
     ...TEMPLATES_USECASES,
     ...PROJECT_USECASES,
+    ...APPLICATION_USECASES,
     ...ORGANIZATION_USECASES,
   ],
   exports: [
@@ -156,6 +158,7 @@ import { ApplicationEntity } from '../infrastructure/adapters/repository/applica
     ...CODE_VERSION_MANAGER_PROVIDER_USECASES,
     ...ORGANIZATION_USECASES,
     ...PROJECT_USECASES,
+    ...APPLICATION_USECASES,
     ...TEMPLATES_USECASES,
     ...GITHUB_USECASES,
   ],

@@ -14,6 +14,7 @@ import CICDProviderController from './controllers/CICDProvider.controller';
 import CodeVersionProviderController from './controllers/codeVersionProvider.controller';
 import CloudProviderController from './controllers/cloudProvider.controller';
 import HomeController from './controllers/home.controller';
+import ApplicationController from './controllers/application.controller';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import HomeController from './controllers/home.controller';
   ],
   controllers: [
     AccountController,
+    ApplicationController,
     CICDProviderController,
     CloudProviderController,
     CodeVersionProviderController,
