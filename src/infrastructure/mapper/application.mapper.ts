@@ -16,4 +16,12 @@ export class ApplicationMapper {
     );
     return Optional.of(application);
   }
+
+  public static toDomains(
+    applicationEntities: ApplicationEntity[],
+  ): ApplicationM[] {
+    return applicationEntities.map((templateInstanceEntity) =>
+      this.toDomain(templateInstanceEntity).get(),
+    );
+  }
 }

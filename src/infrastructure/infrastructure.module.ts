@@ -57,6 +57,10 @@ export class InfrastructureModule {
       },
       {
         method: RequestMethod.GET,
+        path: 'api/v1/projects/:projectId/applications',
+      },
+      {
+        method: RequestMethod.GET,
         path: 'api/v1/projects/:projectId',
       },
       {
