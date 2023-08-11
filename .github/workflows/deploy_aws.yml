@@ -7,12 +7,12 @@ on:
 
 env:
   AWS_REGION: us-east-2
-  ECR_REPOSITORY: kimos-builds
-  ECS_SERVICE: your-ecs-services
-  ECS_CLUSTER: kimos-api-dev-poc
+  ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+  ECS_SERVICE: ${{ secrets.AWS_ECS_SERVICE }}
+  ECS_CLUSTER: ${{ secrets.AWS_ECS_CLUSTER }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  CONTAINER_NAME: your-container-name
+  CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
 
 jobs:
   build_and_deploy:
@@ -48,6 +48,7 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
@@ -56,7 +57,30 @@ jobs:
           task-definition: task-definition.json
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
-
+          environment-variables: |
+            LOG_LEVEL=info
+            ECS_AVAILABLE_LOGGING_DRIVERS='["json-file","awslogs"]'
+            ENVIRONMENT=prod
+            NODE_NAME=${{ secrets.NODE_NAME }}
+            PORT=${{ secrets.AWS_APP_PORT }}
+            REDIS_CONNECTION_STRING=${{ secrets.REDIS_CONNECTION_STRING }}
+            POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+            POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_DATABASE=${{ secrets.POSTGRES_DATABASE }}
+            MODE=${{ secrets.MODE }}
+            RUN_MIGRATIONS=${{ secrets.RUN_MIGRATIONS }}
+            GH_APP_NAME=${{ secrets.GH_APP_NAME }}
+            GH_APP_URL=${{ secrets.GH_APP_URL }}
+            GITHUB_APP_ID=${{ secrets.GH_APP_ID }}
+            GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }}
+            GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }}
+            AUTH0_DOMAIN=${{ secrets.AUTH0_DOMAIN }}
+            AUTH0_AUDIENCE=${{ secrets.AUTH0_AUDIENCE }}
+            CLIENT_ORIGIN_URL=${{ secrets.CLIENT_ORIGIN_URL }}
+            GITHUB_PRIVATE_KEY=${{ secrets.GITHUB_PRIVATE_KEY }}
+            GITHUB_API_URL=${{ secrets.GITHUB_API_URL }}
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:

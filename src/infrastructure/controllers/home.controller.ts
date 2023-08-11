@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export default class HomeController {
   @Get('/')
   public async getHome(): Promise<string> {
-    return 'Hello World!';
+    return 'Hello World api!';
   }
 }

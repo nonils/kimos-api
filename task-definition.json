@@ -1,0 +1,19 @@
+{
+  "family": "kimos-api",
+  "networkMode": "bridge",
+  "containerDefinitions": [
+    {
+      "name": "kimos-api",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 10101,
+          "hostPort": 80
+        }
+      ],
+      "memory": 1024,
+      "environment": [
+      ]
+    }
+  ]
+}
