@@ -21,7 +21,7 @@ export default class PostLoginUsecase {
     const persistedAccount = await this.accountRepository.getAccountById(
       accountId,
     );
-    //If I dont have the account id in the user_metadata, I create a new account
+    //If I dont have the entity id in the user_metadata, I create a new entity
     if (!accountId || !persistedAccount.isPresent()) {
       if (user.user_id.startsWith('google-oauth2|')) {
         account.name = user.given_name;

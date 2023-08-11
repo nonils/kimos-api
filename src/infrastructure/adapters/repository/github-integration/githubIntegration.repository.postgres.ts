@@ -31,10 +31,22 @@ export default class GithubIntegrationRepositoryPostgres
     return GithubIntegrationMapper.toDomain(githubIntegrationCreated);
   }
 
-  deleteGithubIntegration(
+  async deleteGithubIntegration(
     githubIntegrationId: string,
   ): Promise<Optional<GithubIntegrationM>> {
-    return Promise.resolve(undefined);
+    const result = await this.getGithubIntegration(githubIntegrationId);
+    if (result.isPresent()) {
+      await this.githubIntegrationEntityRepository.update(
+        {
+          id: githubIntegrationId,
+        },
+        {
+          isDeleted: true,
+          deletedAt: new Date(),
+        },
+      );
+    }
+    return result;
   }
 
   getAll(): Promise<GithubIntegrationM[]> {
@@ -55,8 +67,18 @@ export default class GithubIntegrationRepositoryPostgres
   }
 
   updateGithubIntegration(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     githubIntegration: GithubIntegrationM,
   ): Promise<Optional<GithubIntegrationM>> {
     return Promise.resolve(undefined);
+  }
+
+  async findGithubIntegrationByAccountId(
+    accountId: string,
+  ): Promise<Optional<GithubIntegrationM>> {
+    const result = await this.githubIntegrationEntityRepository.findOneBy({
+      account: { id: accountId },
+    });
+    return GithubIntegrationMapper.toDomain(result);
   }
 }

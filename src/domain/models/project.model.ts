@@ -6,9 +6,8 @@ export class ProjectM {
     name: string,
     createdBy: string,
     description: string,
-    type: ProjectType,
     organizationId: string,
-    integrations: string[] = [],
+    type: ProjectType,
   ) {
     this.id = id;
     this.name = name;
@@ -16,16 +15,18 @@ export class ProjectM {
     this.description = description;
     this.organizationId = organizationId;
     this.type = type;
-    this.integrations = integrations;
   }
 
   id: string;
   name: string;
+  templateImplementationId: string;
   createdBy: string;
+  createdByUser: string;
+  accountId: string;
   organizationId: string;
+  organizationName: string;
   description: string;
   type: ProjectType;
-  integrations: string[];
   createdAt: Date;
   updatedAt: Date;
   isDeleted: boolean;

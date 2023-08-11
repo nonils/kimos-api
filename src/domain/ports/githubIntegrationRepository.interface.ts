@@ -8,6 +8,13 @@ export interface GithubIntegrationRepositoryInterface {
   getAll(): Promise<GithubIntegrationM[]>;
 
   /**
+   *
+   */
+  findGithubIntegrationByAccountId(
+    accountId: string,
+  ): Promise<Optional<GithubIntegrationM>>;
+
+  /**
    * Returns GithubIntegration filtered by id
    * @returns a `GithubIntegration` object containing the data.
    * @param id

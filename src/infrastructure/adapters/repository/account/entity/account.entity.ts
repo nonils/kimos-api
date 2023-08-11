@@ -3,6 +3,7 @@ import { GithubIntegrationEntity } from '../../github-integration/entity/githubI
 import { OrganizationMemberEntity } from '../../organization-member/entity/organizationMember.entity';
 import { OrganizationEntity } from '../../organization/entity/organization.entity';
 import { ProjectEntity } from '../../project/entity/project.entity';
+import { ApplicationEntity } from '../../application/entity/application.entity';
 
 @Entity({ name: 'Accounts' })
 export class AccountEntity {
@@ -95,4 +96,12 @@ export class AccountEntity {
     eager: false,
   })
   projects: ProjectEntity[];
+  @OneToMany(
+    () => ApplicationEntity,
+    (applications) => applications.createdBy,
+    {
+      eager: false,
+    },
+  )
+  applications: ApplicationEntity[];
 }

@@ -1,30 +1,23 @@
-export class ApplicationM {
-  constructor(
-    id: string,
-    name: string,
-    githubRepositoryName: string,
-    appTemplateId: string,
-    appTemplateVersion: string,
-  ) {
-    this.id = id;
-    this.name = name;
-    this.githubRepositoryName = githubRepositoryName;
-    this.appTemplateId = appTemplateVersion;
-    this.appTemplateVersion = appTemplateVersion;
-  }
+import { ApplicationStatus } from './applicationStatus.enum';
 
+export class ApplicationM {
   id: string;
+  projectId: string;
   name: string;
-  githubRepositoryName: string;
-  appTemplateId: string;
-  appTemplateVersion: string;
+  description: string;
+  allowsJiraIntegration: boolean;
+  jiraProjectName: string;
+  jiraKey: string;
+  isPrivateRepo: boolean;
+  repositoryName: string;
+  status: ApplicationStatus;
+  templateImplementationId: string;
+  createdBy: string;
   createdAt: Date;
   updatedAt: Date;
+  isDeleted: boolean;
 
   setCreateAt(date: Date) {
     this.createdAt = date;
-  }
-  setUpdatedAt(date: Date) {
-    this.updatedAt = date;
   }
 }

@@ -14,6 +14,7 @@ import CICDProviderController from './controllers/CICDProvider.controller';
 import CodeVersionProviderController from './controllers/codeVersionProvider.controller';
 import CloudProviderController from './controllers/cloudProvider.controller';
 import HomeController from './controllers/home.controller';
+import ApplicationController from './controllers/application.controller';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import HomeController from './controllers/home.controller';
   ],
   controllers: [
     AccountController,
+    ApplicationController,
     CICDProviderController,
     CloudProviderController,
     CodeVersionProviderController,
@@ -48,6 +50,26 @@ export class InfrastructureModule {
       {
         method: RequestMethod.POST,
         path: 'api/v1/github/create-repo-for-org',
+      },
+      {
+        method: RequestMethod.GET,
+        path: 'api/v1/projects',
+      },
+      {
+        method: RequestMethod.GET,
+        path: 'api/v1/projects/:projectId/applications',
+      },
+      {
+        method: RequestMethod.GET,
+        path: 'api/v1/projects/:projectId',
+      },
+      {
+        method: RequestMethod.POST,
+        path: 'api/v1/projects',
+      },
+      {
+        method: RequestMethod.POST,
+        path: 'api/v1/applications',
       },
       {
         method: RequestMethod.GET,

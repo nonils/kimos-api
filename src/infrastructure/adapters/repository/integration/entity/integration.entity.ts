@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { IntegrationType } from '../../../../../domain/models/IntegrationType';
 
-@Entity()
+@Entity('Integrations')
 export class IntegrationEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { DomainModule } from '../domain/domain.module';
 import TemplateRepositoryPostgres from '../infrastructure/adapters/repository/template/template.repository.postgres';
 import TemplateFactory from './factory/template.factory';
+import ApplicationFactory from './factory/application.factory';
 import GithubIntegrationFactory from './factory/githubIntegration.factory';
 import { TEMPLATES_USECASES } from './usecases/templates';
 import { GITHUB_USECASES } from './usecases/github';
@@ -22,6 +23,7 @@ import { OrganizationEntity } from '../infrastructure/adapters/repository/organi
 import { ProjectEntity } from '../infrastructure/adapters/repository/project/entity/project.entity';
 import OrganizationFactory from './factory/organization.factory';
 import { PROJECT_USECASES } from './usecases/project';
+import { APPLICATION_USECASES } from './usecases/application';
 import ProjectRepositoryPostgres from '../infrastructure/adapters/repository/project/project.repository.postgres';
 import CloudProviderRepositoryPostgres from '../infrastructure/adapters/repository/cloud-provider/cloudProvider.repository.postgres';
 import CICDProviderRepositoryPostgres from '../infrastructure/adapters/repository/cicd-provider/cicdProvider.repository.postgres';
@@ -34,6 +36,14 @@ import { CICDProviderEntity } from '../infrastructure/adapters/repository/cicd-p
 import { CodeVersionManagerProviderEntity } from '../infrastructure/adapters/repository/code-version-manager-provider/entity/codeVersionManagerProvider.entity';
 import TemplateImplementationRepositoryPostgres from '../infrastructure/adapters/repository/template/templateImplementation.repository.postgres';
 import { TemplateImplementationEntity } from '../infrastructure/adapters/repository/template/entity/templateImplementation.entity';
+import { CodeVersionManagerServiceFactory } from '../infrastructure/adapters/factories/codeVersionManagerService.factory';
+import {
+  GithubService,
+  QueueSqsService,
+} from '../infrastructure/adapters/services';
+import ProjectFactory from './factory/project.factory';
+import ApplicationRepositoryPostgres from '../infrastructure/adapters/repository/application/applicationRepositoryPostgres';
+import { ApplicationEntity } from '../infrastructure/adapters/repository/application/entity/application.entity';
 
 @Module({
   imports: [
@@ -44,6 +54,7 @@ import { TemplateImplementationEntity } from '../infrastructure/adapters/reposit
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
+        logging: true,
         host: configService.get(Configuration.POSTGRES_HOST),
         port: configService.get(Configuration.POSTGRES_PORT),
         username: configService.get(Configuration.POSTGRES_USER),
@@ -54,6 +65,7 @@ import { TemplateImplementationEntity } from '../infrastructure/adapters/reposit
     }),
     TypeOrmModule.forFeature([
       AccountEntity,
+      ApplicationEntity,
       CICDProviderEntity,
       CloudProviderEntity,
       CodeVersionManagerProviderEntity,
@@ -75,18 +87,16 @@ import { TemplateImplementationEntity } from '../infrastructure/adapters/reposit
   ],
   providers: [
     TemplateFactory,
+    ApplicationFactory,
+    ProjectFactory,
     OrganizationFactory,
     GithubIntegrationFactory,
-    ...CLOUD_PROVIDER_USECASES,
-    ...CICD_PROVIDER_USECASES,
-    ...CODE_VERSION_MANAGER_PROVIDER_USECASES,
-    ...ACCOUNT_USECASES,
-    ...GITHUB_USECASES,
-    ...TEMPLATES_USECASES,
-    ...PROJECT_USECASES,
-    ...ORGANIZATION_USECASES,
     { provide: 'AccountRepository', useClass: AccountRepositoryPostgres },
     { provide: 'TemplateRepository', useClass: TemplateRepositoryPostgres },
+    {
+      provide: 'ApplicationRepository',
+      useClass: ApplicationRepositoryPostgres,
+    },
     {
       provide: 'TemplateImplementationRepository',
       useClass: TemplateImplementationRepositoryPostgres,
@@ -119,16 +129,39 @@ import { TemplateImplementationEntity } from '../infrastructure/adapters/reposit
       provide: 'GithubClient',
       useClass: GithubClient,
     },
+    {
+      provide: 'GithubService',
+      useClass: GithubService,
+    },
+    {
+      provide: 'QueueService',
+      useClass: QueueSqsService,
+    },
+    CodeVersionManagerServiceFactory,
+    ...CLOUD_PROVIDER_USECASES,
+    ...CICD_PROVIDER_USECASES,
+    ...CODE_VERSION_MANAGER_PROVIDER_USECASES,
+    ...ACCOUNT_USECASES,
+    ...GITHUB_USECASES,
+    ...TEMPLATES_USECASES,
+    ...PROJECT_USECASES,
+    ...APPLICATION_USECASES,
+    ...ORGANIZATION_USECASES,
   ],
   exports: [
     TemplateFactory,
+    ApplicationFactory,
+    ProjectFactory,
     OrganizationFactory,
+    GithubIntegrationFactory,
+    CodeVersionManagerServiceFactory,
     ...ACCOUNT_USECASES,
     ...CLOUD_PROVIDER_USECASES,
     ...CICD_PROVIDER_USECASES,
     ...CODE_VERSION_MANAGER_PROVIDER_USECASES,
     ...ORGANIZATION_USECASES,
     ...PROJECT_USECASES,
+    ...APPLICATION_USECASES,
     ...TEMPLATES_USECASES,
     ...GITHUB_USECASES,
   ],

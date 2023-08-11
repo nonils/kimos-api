@@ -1,8 +1,7 @@
 import { Optional } from 'typescript-optional';
 import { ProjectEntity } from '../adapters/repository/project/entity/project.entity';
-import { ProjectM, ProjectType } from '../../domain/models';
+import { ProjectM } from '../../domain/models';
 import { AccountEntity } from '../adapters/repository/account/entity/account.entity';
-import CreateProjectCommand from '../../application/commands/project/createProject.command';
 
 export default class ProjectMapper {
   public static toEntity(project: ProjectM): ProjectEntity {
@@ -21,30 +20,17 @@ export default class ProjectMapper {
     const project = new ProjectM(
       projectEntity.id,
       projectEntity.name,
-      projectEntity.account.id,
+      projectEntity.accountId,
       projectEntity.description,
+      projectEntity.organizationId,
       projectEntity.type,
-      '',
-      [],
     );
+    project.accountId = projectEntity.accountId;
+    project.createdByUser =
+      projectEntity.createdBy?.name + ' ' + projectEntity.createdBy?.lastName;
+    project.organizationName = projectEntity.organization?.name;
     project.setCreateAt(new Date(projectEntity.createdAt));
     return Optional.of(project);
-  }
-
-  public static toDomainFromCreateProjectCommand(
-    createProjectCommand: CreateProjectCommand,
-  ): ProjectM {
-    return new ProjectM(
-      undefined,
-      createProjectCommand.name,
-      undefined,
-      createProjectCommand.description,
-      createProjectCommand.organizationId
-        ? ProjectType.ORGANIZATION
-        : ProjectType.PERSONAL,
-      createProjectCommand.organizationId,
-      [],
-    );
   }
 
   public static toDomains(projectEntities: ProjectEntity[]): ProjectM[] {
