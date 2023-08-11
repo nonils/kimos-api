@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Optional } from 'typescript-optional';
 import { ApplicationEntity } from './entity/application.entity';
-import { ApplicationRepositoryInterface } from '../../../../domain/ports/applicationRepository.interface';
+import { ApplicationRepositoryInterface } from '../../../../domain/ports';
 import { ApplicationM } from '../../../../domain/models';
 import { ApplicationMapper } from '../../../mapper/application.mapper';
 
@@ -30,6 +30,7 @@ export default class ApplicationRepositoryPostgres
       .getMany();
     return ApplicationMapper.toDomains(applicationEntities);
   }
+
   async countApplicationsByProjectId(projectId: string): Promise<number> {
     const query = this.applicationEntityRepository
       .createQueryBuilder('application')
@@ -38,12 +39,20 @@ export default class ApplicationRepositoryPostgres
   }
 
   async createApplication(
-    templateInstance: ApplicationM,
+    applicationModel: ApplicationM,
   ): Promise<Optional<ApplicationM>> {
     const result = await this.applicationEntityRepository.save({
-      project: { id: templateInstance.projectId },
+      name: applicationModel.name,
+      description: applicationModel.description,
+      allowsJiraIntegration: applicationModel.allowsJiraIntegration,
+      jiraKey: applicationModel.jiraKey,
+      jiraProjectName: applicationModel.jiraProjectName,
+      isPrivateRepo: applicationModel.isPrivateRepo,
+      repositoryName: applicationModel.repositoryName,
+      createdBy: { id: applicationModel.createdBy },
+      project: { id: applicationModel.projectId },
       templateImplementation: {
-        id: templateInstance.templateImplementationId,
+        id: applicationModel.templateImplementationId,
       },
     });
     return ApplicationMapper.toDomain(result);

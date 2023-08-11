@@ -1,0 +1,5 @@
+export enum ApplicationStatus {
+  WAITING_FOR_INTEGRATIONS = 'WAITING FOR INTEGRATIONS',
+  PENDING = 'PENDING',
+  CREATED = 'CREATED',
+}

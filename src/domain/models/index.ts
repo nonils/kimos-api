@@ -1,5 +1,6 @@
 export * from './account.model';
 export * from './application.model';
+export * from './applicationStatus.enum';
 export * from './CICDProvider.model';
 export * from './cloudProvider.model';
 export * from './codeVersionManagmentProvider.model';

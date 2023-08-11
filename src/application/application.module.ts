@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { DomainModule } from '../domain/domain.module';
 import TemplateRepositoryPostgres from '../infrastructure/adapters/repository/template/template.repository.postgres';
 import TemplateFactory from './factory/template.factory';
+import ApplicationFactory from './factory/application.factory';
 import GithubIntegrationFactory from './factory/githubIntegration.factory';
 import { TEMPLATES_USECASES } from './usecases/templates';
 import { GITHUB_USECASES } from './usecases/github';
@@ -86,6 +87,7 @@ import { ApplicationEntity } from '../infrastructure/adapters/repository/applica
   ],
   providers: [
     TemplateFactory,
+    ApplicationFactory,
     ProjectFactory,
     OrganizationFactory,
     GithubIntegrationFactory,
@@ -148,6 +150,7 @@ import { ApplicationEntity } from '../infrastructure/adapters/repository/applica
   ],
   exports: [
     TemplateFactory,
+    ApplicationFactory,
     ProjectFactory,
     OrganizationFactory,
     GithubIntegrationFactory,
